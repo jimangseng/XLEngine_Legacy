@@ -17,9 +17,18 @@
     <ClInclude Include="XLEngine.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
+    <ClInclude Include="XLD3DInstance.h">
+      <Filter>0_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>0_Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XLEngine.cpp">
+      <Filter>0_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="XLD3DInstance.cpp">
       <Filter>0_Engine</Filter>
     </ClCompile>
   </ItemGroup>

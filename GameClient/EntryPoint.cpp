@@ -73,9 +73,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg;
 
-	Game myGame(hWnd);
-
-	myGame.Start();
+	Game myGame;
+	myGame.Start(hWnd);
 
 	// 기본 메시지 루프입니다:
 	while (true)
@@ -90,6 +89,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		myGame.Update();
 	}
+
+	myGame.Finish();
 
 	return (int)msg.wParam;
 }

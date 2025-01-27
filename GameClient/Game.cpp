@@ -6,14 +6,10 @@ class Game
 {
 public:
 	unique_ptr<XLEngine> engine;
-
-	Game(HWND _hWnd)
-		: engine(make_unique<XLEngine>(_hWnd))
+	
+	void Start(HWND _hWnd)
 	{
-
-	}
-	void Start()
-	{
+		engine = make_unique<XLEngine>(_hWnd);
 		engine->Initialize();
 	}
 
@@ -22,8 +18,8 @@ public:
 		engine->Update();
 	}
 
-	void Finalize()
+	void Finish()
 	{
-		engine->Finalize();
+		engine->Finish();
 	}
 };
