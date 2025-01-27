@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="0_Engine">
+      <UniqueIdentifier>{95952954-5597-4179-86d1-3abb75a32f2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10_etc">
+      <UniqueIdentifier>{666dc039-7203-4c0c-aca7-a43a6aa2ade6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Filter>10_etc</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="XLEngine.h">
+      <Filter>0_Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="XLEngine.cpp">
+      <Filter>0_Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
