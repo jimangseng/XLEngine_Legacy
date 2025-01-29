@@ -5,6 +5,7 @@
 class Game
 {
 public:
+	
 	unique_ptr<XLEngine> engine;
 	
 	void Start(HWND _hWnd)

@@ -7,6 +7,9 @@
     <Filter Include="10_etc">
       <UniqueIdentifier>{666dc039-7203-4c0c-aca7-a43a6aa2ade6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HLSL">
+      <UniqueIdentifier>{f79c960a-0d9c-4a39-9ad9-0da6a0ef6eb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -31,5 +34,13 @@
     <ClCompile Include="XLD3DInstance.cpp">
       <Filter>0_Engine</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
