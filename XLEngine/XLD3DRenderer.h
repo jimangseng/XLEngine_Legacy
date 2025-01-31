@@ -2,13 +2,18 @@
 
 #include "common.h"
 #include <winrt\base.h>
+#include <vector>
 
 using namespace DirectX;
 using namespace winrt;
-class XLD3DInstance
+
+class Cube;
+
+class XLD3DRenderer
 {
 public:
-	XLD3DInstance(HWND _hWnd)
+	XLD3DRenderer() = delete;
+	XLD3DRenderer(HWND _hWnd)
 		:
 		m_hWnd(_hWnd)
 	{
@@ -18,10 +23,23 @@ public:
 public:
 	void D3DInitialize();
 	void D3DUpdate();
+	void D3DFinalize();
 
 private:
 	void BuildCOMs();
 	void BindCOMsToPipeline();
+
+private:
+	void BuildDeviceAndSwapChain();
+
+	HRESULT BuildVertexBuffer();
+	HRESULT BuildIndexBuffer();
+
+	void BuildShaderAndInputLayout();
+	void SetRasterizerState();
+	void BuildRenderTargetView();
+	void BuildDepthStencilView();
+	void SetDepthStencilState();
 
 private:
 	/// DX관련 ///
@@ -46,7 +64,8 @@ private:
 
 	// RenderTargetView
 	com_ptr<ID3D11RenderTargetView> renderTargetView;
-	ID3D11RenderTargetView* RTVs[2];
+	std::vector<ID3D11RenderTargetView*> RTVs;
+
 
 	/// Depth Stencil
 	// Depth Stencil Buffer
@@ -64,7 +83,7 @@ private:
 	/// Buffer, InputLayout
 	// Vertex Buffer
 	com_ptr<ID3D11Buffer> vertexBuffer;
-	ID3D11Buffer* VBs[1];
+	std::vector<ID3D11Buffer*> VBs;
 	
 	// Index Buffer
 	com_ptr<ID3D11Buffer> indexBuffer;
@@ -92,13 +111,6 @@ private:
 	
 	com_ptr<ID3D11BlendState> blendState;
 
-	struct Vertex
-	{
-		XMFLOAT3 position;
-		XMFLOAT4 color;
-	};
-
-
 	/// 기타
 	// HRESULT
 	HRESULT result;
@@ -112,4 +124,6 @@ private:
 	// Background Color
 	float backgroundColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
 
+
+	Cube* cube;
 };

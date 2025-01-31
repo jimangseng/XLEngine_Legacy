@@ -1,6 +1,8 @@
 #pragma once
 
-#include "XLD3DInstance.h"
+#include "XLD3DRenderer.h"
+
+#include <memory>
 
 using namespace std;
 class XLEngine
@@ -14,6 +16,6 @@ public:
 	void Finish();
 
 private:
-	XLD3DInstance* instance;
+	unique_ptr<XLD3DRenderer> renderer;
 
 };

@@ -133,12 +133,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="XLD3DInstance.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="XLD3DRenderer.cpp" />
     <ClCompile Include="XLEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
-    <ClInclude Include="XLD3DInstance.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="XLD3DRenderer.h" />
     <ClInclude Include="XLEngine.h" />
   </ItemGroup>
   <ItemGroup>

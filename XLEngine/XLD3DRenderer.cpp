@@ -1,17 +1,26 @@
-#include "XLD3DInstance.h"
+#include "XLD3DRenderer.h"
 #include <vector>
+#include <array>
 
-void XLD3DInstance::D3DInitialize()
+#include "Cube.h"
+
+void XLD3DRenderer::D3DInitialize()
 {
+	// Build Geometry
+	cube = new Cube();
+
+	// Build COM Objects
 	BuildCOMs();
+
+	// Bind COM to Piepline
 	BindCOMsToPipeline();
 }
 
-void XLD3DInstance::D3DUpdate()
+void XLD3DRenderer::D3DUpdate()
 {
 	// binding RTV to pipline OM Stage
 	//deviceContext->OMSetRenderTargets(1, RTVs, depthStencilView.get());
-	deviceContext->OMSetRenderTargets(1, RTVs, NULL);
+	deviceContext->OMSetRenderTargets(1, RTVs.data(), NULL);	// 임시 변수를 안쓸 수는 없나?
 
 	// clear DSV
 	//deviceContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -20,14 +29,73 @@ void XLD3DInstance::D3DUpdate()
 	deviceContext->ClearRenderTargetView(renderTargetView.get(), backgroundColor);
 
 	// Draw Call
-	deviceContext->DrawIndexed(3, 0, 0);
+	deviceContext->DrawIndexed(36, 0, 0);
 
 	// present swap chain
 	swapChain->Present1(0, 0, &presentParams);
-
 }
 
-void XLD3DInstance::BuildCOMs()
+void XLD3DRenderer::D3DFinalize()
+{
+}
+
+void XLD3DRenderer::BuildCOMs()
+{
+	// Create Device and Swapchain
+	BuildDeviceAndSwapChain();
+
+	// Create RTV
+	BuildRenderTargetView();
+
+	// Create Vertex Buffer
+	BuildVertexBuffer();
+
+	// Create Index Buffer
+	BuildIndexBuffer();
+
+	// Create Shader and Inputlayout
+	BuildShaderAndInputLayout();
+
+	// Set Rasterizer State
+	SetRasterizerState();
+
+	// Create DSV
+	BuildDepthStencilView();
+
+	// Set depth stencil state
+	SetDepthStencilState();
+}
+
+void XLD3DRenderer::BindCOMsToPipeline()
+{
+	// binding InputLayout to pipline IA Stage 
+	deviceContext->IASetInputLayout(inputLayout.get());
+
+	// binding Buffers to pipeline IA Stage
+	UINT strides = sizeof(Cube::Vertex);
+	UINT offsets = 0;
+	deviceContext->IASetVertexBuffers(0, 1, VBs.data(), &strides, &offsets);
+	deviceContext->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
+
+	// Set Primitive Topology
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// binding shaders to pipline
+	deviceContext->VSSetShader(vertexShader.get(), NULL, NULL);
+	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
+
+	// binding DSS to pipeline OM Stage
+	deviceContext->OMSetDepthStencilState(depthStencilState.get(), 0);
+
+	//deviceContext->OMSetBlendState(blendState.get(), NULL, NULL);
+	deviceContext->OMSetBlendState(NULL, NULL, 0xffffffff);
+
+	// Set viewport
+	D3D11_VIEWPORT viewport = { 0, 0, ScreenWidth, ScreenHeight, 0, 1 };
+	deviceContext->RSSetViewports(1, &viewport);
+}
+
+void XLD3DRenderer::BuildDeviceAndSwapChain()
 {
 	// create factory
 	result = CreateDXGIFactory1(__uuidof(IDXGIFactory2), factory.put_void());
@@ -76,61 +144,40 @@ void XLD3DInstance::BuildCOMs()
 		nullptr,
 		swapChain.put()
 	);
+}
 
-	// get render target from swap chain
-	result = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), renderTarget.put_void());
-
-	D3D11_TEXTURE2D_DESC tDesc;
-	renderTarget->GetDesc(&tDesc);
-	ScreenWidth = tDesc.Width;
-	ScreenHeight = tDesc.Height;
-
-	// create RTV
-	result = device->CreateRenderTargetView
-	(
-		renderTarget.get(),
-		NULL,
-		renderTargetView.put()
-	);
-
-	RTVs[0] = renderTargetView.get();
-
-
-	// Create Vertex Buffer
-
-	Vertex vertices[3] =
-	{
-		Vertex{ {0.0f, 0.5f, 0.0f}, {1.0f, 1.0f, 0.0f, 1.0f} },
-		Vertex{ {0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 0.0f, 1.0f} },
-		Vertex{ {-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 0.0f, 1.0f} }
-	};
-
+HRESULT XLD3DRenderer::BuildVertexBuffer()
+{
 	D3D11_BUFFER_DESC vbDesc
 	{
-		sizeof(Vertex) * 3,
+		cube->GetVBSize(),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_VERTEX_BUFFER,
 		NULL,
 		NULL,
-		sizeof(Vertex)
+		sizeof(Cube::Vertex)
 	};
 
 	D3D11_SUBRESOURCE_DATA vbData
 	{
-		vertices,
+		cube->GetVBData(),
 		0,
 		0
 	};
 
 	result = device->CreateBuffer(&vbDesc, &vbData, vertexBuffer.put());
+	
+	VBs.emplace_back(vertexBuffer.get());
+	
+	return result;
+}
 
-
-	// Create Index Buffer
-	int indices[3]{ 0, 1, 2 };
+HRESULT XLD3DRenderer::BuildIndexBuffer()
+{
 
 	D3D11_BUFFER_DESC ibDesc
 	{
-		sizeof(indices),
+		cube->GetIBSize(),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_INDEX_BUFFER,
 		NULL,
@@ -140,32 +187,19 @@ void XLD3DInstance::BuildCOMs()
 
 	D3D11_SUBRESOURCE_DATA ibData
 	{
-		indices,
+		cube->GetIBData(),
 		0,
 		0
 	};
 
-	result = device->CreateBuffer(&ibDesc, &ibData, indexBuffer.put());
+	return device->CreateBuffer(&ibDesc, &ibData, indexBuffer.put());
+}
 
+void XLD3DRenderer::BuildShaderAndInputLayout()
+{
 	// Loading Shader ByteCode
 	result = D3DReadFileToBlob(TEXT("../Shader/VertexShader.cso"), vertexShaderByteCode.put());
 	result = D3DReadFileToBlob(TEXT("../Shader/PixelShader.cso"), pixelShaderByteCode.put());
-
-	// Create Input Layout
-	D3D11_INPUT_ELEMENT_DESC intputElementDesc[] =
-	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	};
-
-	result = device->CreateInputLayout
-	(
-		intputElementDesc,
-		2,
-		vertexShaderByteCode->GetBufferPointer(),
-		vertexShaderByteCode->GetBufferSize(),
-		inputLayout.put()
-	);
 
 	// Create Vertex Shader
 	result = device->CreateVertexShader
@@ -185,9 +219,25 @@ void XLD3DInstance::BuildCOMs()
 		pixelShader.put()
 	);
 
+	// Create Input Layout
+	D3D11_INPUT_ELEMENT_DESC intputElementDesc[] =
+	{
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	};
 
+	result = device->CreateInputLayout
+	(
+		intputElementDesc,
+		2,
+		vertexShaderByteCode->GetBufferPointer(),
+		vertexShaderByteCode->GetBufferSize(),
+		inputLayout.put()
+	);
+}
 
-	// Create Rasterizer State
+void XLD3DRenderer::SetRasterizerState()
+{
 	D3D11_RASTERIZER_DESC rasterizerDesc =
 	{
 		D3D11_FILL_SOLID,
@@ -203,11 +253,31 @@ void XLD3DInstance::BuildCOMs()
 	};
 
 	result = device->CreateRasterizerState(&rasterizerDesc, rasterizerState.put());
+}
 
+void XLD3DRenderer::BuildRenderTargetView()
+{
+	// get render target from swap chain
+	result = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), renderTarget.put_void());
 
+	D3D11_TEXTURE2D_DESC tDesc;
+	renderTarget->GetDesc(&tDesc);
+	ScreenWidth = tDesc.Width;
+	ScreenHeight = tDesc.Height;
 
+	// create RTV
+	result = device->CreateRenderTargetView
+	(
+		renderTarget.get(),
+		NULL,
+		renderTargetView.put()
+	);
 
-	// create DSB
+	RTVs.emplace_back(renderTargetView.get());
+}
+
+void XLD3DRenderer::BuildDepthStencilView()
+{
 	D3D11_TEXTURE2D_DESC dsbDesc =
 	{
 		ScreenWidth,
@@ -239,8 +309,10 @@ void XLD3DInstance::BuildCOMs()
 		&dsvDesc,
 		depthStencilView.put()
 	);
+}
 
-	// create depth stencil state
+void XLD3DRenderer::SetDepthStencilState()
+{
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc =
 	{
 		false,
@@ -257,41 +329,10 @@ void XLD3DInstance::BuildCOMs()
 	(&depthStencilDesc, depthStencilState.put());
 
 	//create blend state
-
 	D3D11_BLEND_DESC blendDesc =
 	{
 		false, false, NULL
 	};
 
 	device->CreateBlendState(&blendDesc, blendState.put());
-}
-
-void XLD3DInstance::BindCOMsToPipeline()
-{
-	// binding InputLayout to pipline IA Stage 
-	deviceContext->IASetInputLayout(inputLayout.get());
-
-	// binding Buffers to pipeline IA Stage
-	VBs[0] = vertexBuffer.get();
-	UINT strides = sizeof(Vertex);
-	UINT offsets = 0;
-	deviceContext->IASetVertexBuffers(0, 1, VBs, &strides, &offsets);
-	deviceContext->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
-
-	// Set Primitive Topology
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	// binding shaders to pipline
-	deviceContext->VSSetShader(vertexShader.get(), NULL, NULL);
-	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
-
-	// binding DSS to pipeline OM Stage
-	deviceContext->OMSetDepthStencilState(depthStencilState.get(), 0);
-
-	//deviceContext->OMSetBlendState(blendState.get(), NULL, NULL);
-	deviceContext->OMSetBlendState(NULL, NULL, 0xffffffff);
-
-	// Set viewport
-	D3D11_VIEWPORT viewport = { 0, 0, ScreenWidth, ScreenHeight, 0, 1 };
-	deviceContext->RSSetViewports(1, &viewport);
 }

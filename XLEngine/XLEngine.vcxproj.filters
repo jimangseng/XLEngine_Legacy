@@ -7,7 +7,10 @@
     <Filter Include="10_etc">
       <UniqueIdentifier>{666dc039-7203-4c0c-aca7-a43a6aa2ade6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HLSL">
+    <Filter Include="1_Geometry">
+      <UniqueIdentifier>{9975ed56-a073-4f7b-bc43-429763cd162f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_HLSL">
       <UniqueIdentifier>{f79c960a-0d9c-4a39-9ad9-0da6a0ef6eb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -20,27 +23,33 @@
     <ClInclude Include="XLEngine.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
-    <ClInclude Include="XLD3DInstance.h">
+    <ClInclude Include="XLD3DRenderer.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
       <Filter>0_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>1_Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XLEngine.cpp">
       <Filter>0_Engine</Filter>
     </ClCompile>
-    <ClCompile Include="XLD3DInstance.cpp">
+    <ClCompile Include="XLD3DRenderer.cpp">
       <Filter>0_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>1_Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>HLSL</Filter>
+      <Filter>2_HLSL</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>HLSL</Filter>
+      <Filter>2_HLSL</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
