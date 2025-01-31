@@ -1,22 +1,20 @@
 #pragma once
 #include <memory>
-#include "Cube.h"
 #include "IObject.h"
+#include "Cube.h"
 
 class Scene
 {
 public:
-	Scene()
-	{
-		//std::unique_ptr<Cube> cube = std::make_unique<Cube>();
-		//objects.emplace_back(cube);
-	}
-
-private:
-	//std::vector<IObject> objects;
+	Scene();
 
 public:
-	std::unique_ptr<Cube> cube = std::make_unique<Cube>();
+	void Initialize();
+	void Build();
+	void Draw();
+	void Finalize();
+private:
+	std::vector<shared_ptr<IObject>> objects;
 
 };
 

@@ -1,6 +1,6 @@
 #include "Cube.h"
 
-void Cube::Initialize()
+void Cube::GetD3DResources()
 {
 	device = XLD3DResources::GetDevice();
 	deviceContext = XLD3DResources::GetDeviceContext();
@@ -19,6 +19,17 @@ void Cube::Rotation(XMFLOAT3 _value)
 
 void Cube::Scale(XMFLOAT3 _value)
 {
+}
+
+void Cube::UpdateTransform()
+{
+	for (auto& vertex : vertices)
+	{
+		// Update Translate
+		vertex.position.x += localPosition.x;
+		vertex.position.y += localPosition.y;
+		vertex.position.z += localPosition.z;
+	}
 }
 
 HRESULT Cube::BuildVertexBuffer()
@@ -75,7 +86,7 @@ HRESULT Cube::BuildIndexBuffer()
 	return result;
 }
 
-HRESULT Cube::BuildInputLayout(ID3DBlob*_vsByteCode)
+HRESULT Cube::BuildInputLayout()
 {
 	// Create Input Layout
 	D3D11_INPUT_ELEMENT_DESC intputElementDesc[] =
@@ -88,20 +99,52 @@ HRESULT Cube::BuildInputLayout(ID3DBlob*_vsByteCode)
 	(
 		intputElementDesc,
 		2,
-		_vsByteCode->GetBufferPointer(),
-		_vsByteCode->GetBufferSize(),
+		vertexShaderByteCode->GetBufferPointer(),
+		vertexShaderByteCode->GetBufferSize(),
 		inputLayout.put()
 	);
 
 	return result;
 }
 
-void Cube::Build(ID3DBlob* _vsByteCode)
+void Cube::BuildShader()
 {
-	Initialize();
+	// Loading Shader ByteCode
+	result = D3DReadFileToBlob(TEXT("../Shader/VertexShader.cso"), vertexShaderByteCode.put());
+	result = D3DReadFileToBlob(TEXT("../Shader/PixelShader.cso"), pixelShaderByteCode.put());
+	// Create Vertex Shader
+	result = device->CreateVertexShader
+	(
+		vertexShaderByteCode->GetBufferPointer(),
+		vertexShaderByteCode->GetBufferSize(),
+		NULL,
+		vertexShader.put()
+	);
+
+	// Create Pixel Shader
+	result = device->CreatePixelShader
+	(
+		pixelShaderByteCode->GetBufferPointer(),
+		pixelShaderByteCode->GetBufferSize(),
+		NULL,
+		pixelShader.put()
+	);
+
+}
+
+void Cube::Initialize()
+{
+
+}
+
+void Cube::Build()
+{
+	GetD3DResources();
+	UpdateTransform();
 	BuildVertexBuffer();
 	BuildIndexBuffer();
-	BuildInputLayout(_vsByteCode);
+	BuildShader();
+	BuildInputLayout();
 }
 
 void Cube::Draw()
@@ -123,11 +166,6 @@ void Cube::Bind()
 		vertex.position.z *= size;
 
 		vertex.color = color;
-
-		// Update Translate
-		vertex.position.x += localPosition.x;
-		vertex.position.y += localPosition.y;
-		vertex.position.z += localPosition.z;
 	}
 
 	BuildVertexBuffer();
@@ -140,6 +178,9 @@ void Cube::Bind()
 	UINT offsets = 0;
 	deviceContext->IASetVertexBuffers(0, VBs.size(), VBs.data(), &strides, &offsets);
 	deviceContext->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
+
+	deviceContext->VSSetShader(vertexShader.get(), NULL, NULL);
+	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
 }
 
 void Cube::UnBind()

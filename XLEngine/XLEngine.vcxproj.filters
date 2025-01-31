@@ -10,7 +10,10 @@
     <Filter Include="1_Geometry">
       <UniqueIdentifier>{9975ed56-a073-4f7b-bc43-429763cd162f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="2_HLSL">
+    <Filter Include="2_Scene">
+      <UniqueIdentifier>{c8109163-5012-4336-a283-ac8ddc1f7c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_HLSL">
       <UniqueIdentifier>{f79c960a-0d9c-4a39-9ad9-0da6a0ef6eb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -32,9 +35,15 @@
     <ClInclude Include="Cube.h">
       <Filter>1_Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="IObject.h" />
-    <ClInclude Include="XLD3DResources.h" />
+    <ClInclude Include="IObject.h">
+      <Filter>1_Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>2_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="XLD3DResources.h">
+      <Filter>0_Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XLEngine.cpp">
@@ -46,16 +55,22 @@
     <ClCompile Include="Cube.cpp">
       <Filter>1_Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="IObject.cpp" />
-    <ClCompile Include="XLD3DResources.cpp" />
+    <ClCompile Include="IObject.cpp">
+      <Filter>1_Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>2_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="XLD3DResources.cpp">
+      <Filter>0_Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>2_HLSL</Filter>
+      <Filter>4_HLSL</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>2_HLSL</Filter>
+      <Filter>4_HLSL</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -18,12 +18,12 @@ public:
 	//	return instance;
 	//}
 
-	static ID3D11Device* GetDevice()
+	static ID3D11Device* const GetDevice()
 	{
 		return device.get();
 	}
 
-	static ID3D11DeviceContext* GetDeviceContext()
+	static ID3D11DeviceContext* const GetDeviceContext()
 	{
 		return deviceContext.get();
 	}

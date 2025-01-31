@@ -2,14 +2,14 @@
 
 #include "Common.h"
 #include <vector>
-//#include "IObject.h"
+#include "IObject.h"
 #include "XLD3DResources.h"
 
 using namespace DirectX;
 using namespace std;
 using namespace winrt;
 
-class Cube
+class Cube : public IObject
 {
 public:
 	// 버텍스에 들어갈 데이터 구조체
@@ -53,7 +53,7 @@ public:
 
 public:
 
-	void Initialize();
+	void GetD3DResources();
 
 	vector<Vertex> vertices;
 	int indices[3 * 2 * 6]
@@ -90,12 +90,16 @@ public:
 	void Rotation(XMFLOAT3 _value);
 	void Scale(XMFLOAT3 _value);
 
+private:
+	void UpdateTransform();
 	HRESULT BuildVertexBuffer();
 	HRESULT BuildIndexBuffer();
-	HRESULT BuildInputLayout(ID3DBlob* _vsByteCode);
+	HRESULT BuildInputLayout();
+	void BuildShader();
 
 public:
-	void Build(ID3DBlob* _vsByteCode);
+	void Initialize();
+	void Build();
 	void Draw();
 
 private:
@@ -118,6 +122,14 @@ public:
 
 	// Input Layout
 	com_ptr<ID3D11InputLayout> inputLayout;
+
+	// vs bytecode
+	com_ptr<ID3DBlob> vertexShaderByteCode; // compiled shader bytecodes
+	com_ptr<ID3DBlob> pixelShaderByteCode;
+
+
+	com_ptr<ID3D11VertexShader> vertexShader;
+	com_ptr<ID3D11PixelShader> pixelShader;
 
 
 	HRESULT result;

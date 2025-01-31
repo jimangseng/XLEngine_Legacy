@@ -5,49 +5,40 @@
 
 void XLD3DRenderer::D3DInitialize()
 {
+	BuildCOM();
 	LoadScene();
-	BuildCOMs();
-	BuildGeometries();
-	BindCOMsToPipeline();
+	BindCOM();
 }
 
 void XLD3DRenderer::D3DUpdate()
 {
 	BindView();
 
-	for (auto& cube : cubes)
-	{
-		cube->Draw();
-	}
+	scene->Draw();
 
 	UnbindView();
 }
 
 void XLD3DRenderer::D3DFinalize()
 {
-	delete[] cubes.data();
+	scene->Finalize();
 }
+
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
 
 void XLD3DRenderer::LoadScene()
 {
-	// 외부에서 씬 불러오는 것으로 가정
-	Cube* tCube = new Cube();
-	tCube->size = 0.5f;
-	tCube->color = XMFLOAT4{ 1.0f, 0.0f, 0.0f, 1.0f };
-	cubes.emplace_back(tCube);
+	scene = new Scene();
 
-	tCube = new Cube();
-	tCube->size = 0.1f;
-	tCube->color = XMFLOAT4{ 1.0f, 1.0f, 0.0f, 1.0f };
-	cubes.emplace_back(tCube);
+	scene->Initialize();
+	scene->Build();
 
-	tCube = new Cube();
-	tCube->size = 0.3f;
-	tCube->color = XMFLOAT4{ 0.0f, 0.0f, 1.0f, 1.0f };
-	cubes.emplace_back(tCube);
 }
 
-void XLD3DRenderer::BuildCOMs()
+void XLD3DRenderer::BuildCOM()
 {
 	BuildDeviceAndSwapChain();
 
@@ -62,22 +53,9 @@ void XLD3DRenderer::BuildCOMs()
 	SetBlendState();
 }
 
-void XLD3DRenderer::BuildGeometries()
-{
-	BuildShader();
-
-	for (auto& cube : cubes)
-	{
-		cube->Build(vertexShaderByteCode.get());
-	}
-}
-
-void XLD3DRenderer::BindCOMsToPipeline()
+void XLD3DRenderer::BindCOM()
 {
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	deviceContext->VSSetShader(vertexShader.get(), NULL, NULL);
-	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
 
 	deviceContext->OMSetDepthStencilState(depthStencilState.get(), 0);
 	deviceContext->OMSetBlendState(NULL, NULL, 0xffffffff);
@@ -86,20 +64,10 @@ void XLD3DRenderer::BindCOMsToPipeline()
 	deviceContext->RSSetViewports(1, &viewport);
 }
 
-void XLD3DRenderer::BindView()
-{
-	// binding RTV to pipline OM Stage
-	deviceContext->OMSetRenderTargets(1, RTVs.data(), NULL);
 
-	deviceContext->ClearRenderTargetView(renderTargetView.get(), backgroundColor);
-	//deviceContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-}
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 
-void XLD3DRenderer::UnbindView()
-{
-	// present swap chain
-	swapChain->Present1(0, 0, &presentParams);
-}
 
 void XLD3DRenderer::BuildDeviceAndSwapChain()
 {
@@ -152,31 +120,6 @@ void XLD3DRenderer::BuildDeviceAndSwapChain()
 		nullptr,
 		nullptr,
 		swapChain.put()
-	);
-}
-
-void XLD3DRenderer::BuildShader()
-{
-	// Loading Shader ByteCode
-	result = D3DReadFileToBlob(TEXT("../Shader/VertexShader.cso"), vertexShaderByteCode.put());
-	result = D3DReadFileToBlob(TEXT("../Shader/PixelShader.cso"), pixelShaderByteCode.put());
-
-	// Create Vertex Shader
-	result = device->CreateVertexShader
-	(
-		vertexShaderByteCode->GetBufferPointer(),
-		vertexShaderByteCode->GetBufferSize(),
-		NULL,
-		vertexShader.put()
-	);
-
-	// Create Pixel Shader
-	result = device->CreatePixelShader
-	(
-		pixelShaderByteCode->GetBufferPointer(),
-		pixelShaderByteCode->GetBufferSize(),
-		NULL,
-		pixelShader.put()
 	);
 }
 
@@ -282,4 +225,24 @@ void XLD3DRenderer::SetBlendState()
 	};
 
 	device->CreateBlendState(&blendDesc, blendState.put());
+}
+
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+
+void XLD3DRenderer::BindView()
+{
+	// binding RTV to pipline OM Stage
+	deviceContext->OMSetRenderTargets(1, RTVs.data(), NULL);
+
+	deviceContext->ClearRenderTargetView(renderTargetView.get(), backgroundColor);
+	//deviceContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+void XLD3DRenderer::UnbindView()
+{
+	// present swap chain
+	swapChain->Present1(0, 0, &presentParams);
 }

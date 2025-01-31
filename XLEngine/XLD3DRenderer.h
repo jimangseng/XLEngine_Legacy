@@ -3,6 +3,7 @@
 #include "common.h"
 #include <vector>
 #include "XLD3DResources.h"
+#include "Scene.h"
 
 using namespace DirectX;
 using namespace winrt;
@@ -28,20 +29,14 @@ public:
 	void D3DUpdate();
 	void D3DFinalize();
 
-public:
-	void LoadScene();
-
 private:
-	void BuildCOMs();
-	void BindCOMsToPipeline();
-	void BindView();
-	void UnbindView();
+	void LoadScene();
+	void BuildCOM();
 	void BuildGeometries();
-	void BindGeometries();
+	void BindCOM();
 
 private:
 	void BuildDeviceAndSwapChain();
-	void BuildShader();
 	void SetRasterizerState();
 	void BuildRenderTargetView();
 	void BuildDepthStencilView();
@@ -49,70 +44,47 @@ private:
 	void SetBlendState();
 
 private:
-	/// DX관련 ///
-	// Factory
-	com_ptr<IDXGIFactory2> factory;
+	void BindView();
+	void UnbindView();
 
-	// Adapter
+
+private:
+	com_ptr<IDXGIFactory2> factory;
 	com_ptr<IDXGIAdapter1> adapter;
 
+	// "XLD3DResource" 에서 com_ptr로 관리하며, 생 포인터를 받아와 사용한다
 	ID3D11Device* device;
 	ID3D11DeviceContext* deviceContext;
 
-	// Swap Chain
 	com_ptr<IDXGISwapChain1> swapChain;
 
 private:
-	/// Render Target
-	// RenderTarget
 	com_ptr<ID3D11Texture2D> renderTarget;
-
-	// RenderTargetView
 	com_ptr<ID3D11RenderTargetView> renderTargetView;
-	std::vector<ID3D11RenderTargetView*> RTVs;
+	std::vector<ID3D11RenderTargetView*> RTVs;	// render target views
 
-	/// Depth Stencil
-	// Depth Stencil Buffer
 	com_ptr<ID3D11Texture2D> depthStencilBuffer;
-
-	// Depth Stencil View
 	com_ptr<ID3D11DepthStencilView> depthStencilView;
 
-	// Depth Stencil State
 	com_ptr<ID3D11DepthStencilState> depthStencilState;
 
-	// Swapchain Present Parameters
-	DXGI_PRESENT_PARAMETERS presentParams{ 0, NULL, NULL, NULL };
+	DXGI_PRESENT_PARAMETERS presentParams{ 0, NULL, NULL, NULL };	// swap chain present parameters
 
-	/// Shader
-	// Compiled Shader ByteCode
-	com_ptr<ID3DBlob> vertexShaderByteCode;
-	com_ptr<ID3DBlob> pixelShaderByteCode;
-
-	// Shader Resource View
 	com_ptr<ID3D11ShaderResourceView> shaderResourceView;
 
-	// Vertex Shader
-	com_ptr<ID3D11VertexShader> vertexShader;
 
-	// Pixel Shader
-	com_ptr<ID3D11PixelShader> pixelShader;
-
-	/// Rasterizer
-	// Rasterizer State
 	com_ptr<ID3D11RasterizerState> rasterizerState;
 
 	com_ptr<ID3D11BlendState> blendState;
 
-	/// 기타
+	// misc
 	int ScreenWidth;
 	int ScreenHeight;
 
-	// Window Handle
-	HWND hWnd;
+	HWND hWnd;	// window handle
 	HRESULT result;
 
-	std::vector<Cube*> cubes;
+	Scene* scene;
 
 	float backgroundColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 };
