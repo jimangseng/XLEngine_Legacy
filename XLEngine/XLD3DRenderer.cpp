@@ -1,98 +1,104 @@
 #include "XLD3DRenderer.h"
 #include <vector>
-#include <array>
 
 #include "Cube.h"
 
 void XLD3DRenderer::D3DInitialize()
 {
-	// Build Geometry
-	cube = new Cube();
-
-	// Build COM Objects
+	LoadScene();
 	BuildCOMs();
-
-	// Bind COM to Piepline
+	BuildGeometries();
 	BindCOMsToPipeline();
 }
 
 void XLD3DRenderer::D3DUpdate()
 {
-	// binding RTV to pipline OM Stage
-	//deviceContext->OMSetRenderTargets(1, RTVs, depthStencilView.get());
-	deviceContext->OMSetRenderTargets(1, RTVs.data(), NULL);	// 임시 변수를 안쓸 수는 없나?
+	BindView();
 
-	// clear DSV
-	//deviceContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	for (auto& cube : cubes)
+	{
+		cube->Draw();
+	}
 
-	// clear RTV
-	deviceContext->ClearRenderTargetView(renderTargetView.get(), backgroundColor);
-
-	// Draw Call
-	deviceContext->DrawIndexed(36, 0, 0);
-
-	// present swap chain
-	swapChain->Present1(0, 0, &presentParams);
+	UnbindView();
 }
 
 void XLD3DRenderer::D3DFinalize()
 {
+	delete[] cubes.data();
+}
+
+void XLD3DRenderer::LoadScene()
+{
+	// 외부에서 씬 불러오는 것으로 가정
+	Cube* tCube = new Cube();
+	tCube->size = 0.5f;
+	tCube->color = XMFLOAT4{ 1.0f, 0.0f, 0.0f, 1.0f };
+	cubes.emplace_back(tCube);
+
+	tCube = new Cube();
+	tCube->size = 0.1f;
+	tCube->color = XMFLOAT4{ 1.0f, 1.0f, 0.0f, 1.0f };
+	cubes.emplace_back(tCube);
+
+	tCube = new Cube();
+	tCube->size = 0.3f;
+	tCube->color = XMFLOAT4{ 0.0f, 0.0f, 1.0f, 1.0f };
+	cubes.emplace_back(tCube);
 }
 
 void XLD3DRenderer::BuildCOMs()
 {
-	// Create Device and Swapchain
 	BuildDeviceAndSwapChain();
 
-	// Create RTV
 	BuildRenderTargetView();
 
-	// Create Vertex Buffer
-	BuildVertexBuffer();
-
-	// Create Index Buffer
-	BuildIndexBuffer();
-
-	// Create Shader and Inputlayout
-	BuildShaderAndInputLayout();
-
-	// Set Rasterizer State
 	SetRasterizerState();
 
-	// Create DSV
 	BuildDepthStencilView();
 
-	// Set depth stencil state
 	SetDepthStencilState();
+
+	SetBlendState();
+}
+
+void XLD3DRenderer::BuildGeometries()
+{
+	BuildShader();
+
+	for (auto& cube : cubes)
+	{
+		cube->Build(vertexShaderByteCode.get());
+	}
 }
 
 void XLD3DRenderer::BindCOMsToPipeline()
 {
-	// binding InputLayout to pipline IA Stage 
-	deviceContext->IASetInputLayout(inputLayout.get());
-
-	// binding Buffers to pipeline IA Stage
-	UINT strides = sizeof(Cube::Vertex);
-	UINT offsets = 0;
-	deviceContext->IASetVertexBuffers(0, 1, VBs.data(), &strides, &offsets);
-	deviceContext->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
-
-	// Set Primitive Topology
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// binding shaders to pipline
 	deviceContext->VSSetShader(vertexShader.get(), NULL, NULL);
 	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
 
-	// binding DSS to pipeline OM Stage
 	deviceContext->OMSetDepthStencilState(depthStencilState.get(), 0);
-
-	//deviceContext->OMSetBlendState(blendState.get(), NULL, NULL);
 	deviceContext->OMSetBlendState(NULL, NULL, 0xffffffff);
 
-	// Set viewport
 	D3D11_VIEWPORT viewport = { 0, 0, ScreenWidth, ScreenHeight, 0, 1 };
 	deviceContext->RSSetViewports(1, &viewport);
+}
+
+void XLD3DRenderer::BindView()
+{
+	// binding RTV to pipline OM Stage
+	deviceContext->OMSetRenderTargets(1, RTVs.data(), NULL);
+
+	deviceContext->ClearRenderTargetView(renderTargetView.get(), backgroundColor);
+	//deviceContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+void XLD3DRenderer::UnbindView()
+{
+	// present swap chain
+	swapChain->Present1(0, 0, &presentParams);
 }
 
 void XLD3DRenderer::BuildDeviceAndSwapChain()
@@ -113,10 +119,13 @@ void XLD3DRenderer::BuildDeviceAndSwapChain()
 		nullptr,
 		0,
 		D3D11_SDK_VERSION,
-		device.put(),
+		XLD3DResources::PutDevice(),
 		nullptr,
-		deviceContext.put()
+		XLD3DResources::PutDeviceContext()
 	);
+
+	device = XLD3DResources::GetDevice();
+	deviceContext = XLD3DResources::GetDeviceContext();
 
 	// swap chain description
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc =
@@ -137,8 +146,8 @@ void XLD3DRenderer::BuildDeviceAndSwapChain()
 	// create swap chain
 	result = factory->CreateSwapChainForHwnd
 	(
-		device.get(),
-		m_hWnd,
+		device,
+		hWnd,
 		&swapChainDesc,
 		nullptr,
 		nullptr,
@@ -146,56 +155,7 @@ void XLD3DRenderer::BuildDeviceAndSwapChain()
 	);
 }
 
-HRESULT XLD3DRenderer::BuildVertexBuffer()
-{
-	D3D11_BUFFER_DESC vbDesc
-	{
-		cube->GetVBSize(),
-		D3D11_USAGE_DEFAULT,
-		D3D11_BIND_VERTEX_BUFFER,
-		NULL,
-		NULL,
-		sizeof(Cube::Vertex)
-	};
-
-	D3D11_SUBRESOURCE_DATA vbData
-	{
-		cube->GetVBData(),
-		0,
-		0
-	};
-
-	result = device->CreateBuffer(&vbDesc, &vbData, vertexBuffer.put());
-	
-	VBs.emplace_back(vertexBuffer.get());
-	
-	return result;
-}
-
-HRESULT XLD3DRenderer::BuildIndexBuffer()
-{
-
-	D3D11_BUFFER_DESC ibDesc
-	{
-		cube->GetIBSize(),
-		D3D11_USAGE_DEFAULT,
-		D3D11_BIND_INDEX_BUFFER,
-		NULL,
-		NULL,
-		sizeof(int)
-	};
-
-	D3D11_SUBRESOURCE_DATA ibData
-	{
-		cube->GetIBData(),
-		0,
-		0
-	};
-
-	return device->CreateBuffer(&ibDesc, &ibData, indexBuffer.put());
-}
-
-void XLD3DRenderer::BuildShaderAndInputLayout()
+void XLD3DRenderer::BuildShader()
 {
 	// Loading Shader ByteCode
 	result = D3DReadFileToBlob(TEXT("../Shader/VertexShader.cso"), vertexShaderByteCode.put());
@@ -217,22 +177,6 @@ void XLD3DRenderer::BuildShaderAndInputLayout()
 		pixelShaderByteCode->GetBufferSize(),
 		NULL,
 		pixelShader.put()
-	);
-
-	// Create Input Layout
-	D3D11_INPUT_ELEMENT_DESC intputElementDesc[] =
-	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	};
-
-	result = device->CreateInputLayout
-	(
-		intputElementDesc,
-		2,
-		vertexShaderByteCode->GetBufferPointer(),
-		vertexShaderByteCode->GetBufferSize(),
-		inputLayout.put()
 	);
 }
 
@@ -327,7 +271,10 @@ void XLD3DRenderer::SetDepthStencilState()
 
 	result = device->CreateDepthStencilState
 	(&depthStencilDesc, depthStencilState.put());
+}
 
+void XLD3DRenderer::SetBlendState()
+{
 	//create blend state
 	D3D11_BLEND_DESC blendDesc =
 	{

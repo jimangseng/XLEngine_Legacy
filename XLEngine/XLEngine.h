@@ -1,7 +1,7 @@
 #pragma once
 
 #include "XLD3DRenderer.h"
-
+#include "Scene.h"
 #include <memory>
 
 using namespace std;

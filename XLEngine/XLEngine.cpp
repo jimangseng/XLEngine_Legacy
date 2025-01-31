@@ -1,11 +1,13 @@
 #include "XLEngine.h"
+#include <memory>
 
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "dxgi.lib")
 #pragma comment (lib, "d3dcompiler.lib")
 
 XLEngine::XLEngine(HWND _hWnd)
-	:renderer(new XLD3DRenderer(_hWnd))
+	:
+	renderer(std::make_unique<XLD3DRenderer>(_hWnd))
 {
 
 }

@@ -1,42 +1,61 @@
 #pragma once
 
+#include "Common.h"
 #include <vector>
-#include <DirectXMath.h>
+//#include "IObject.h"
+#include "XLD3DResources.h"
 
-
+using namespace DirectX;
+using namespace std;
+using namespace winrt;
 
 class Cube
 {
-public :
+public:
 	// 버텍스에 들어갈 데이터 구조체
 	struct Vertex
 	{
-		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT4 color;
+		XMFLOAT3 position;
+		XMFLOAT4 color;
 	};
 
-	// 한 변의 길이
-	float tSize = 0.1f;
-
-	// 버텍스 컬러
-	DirectX::XMFLOAT4 tColor = { 1.0f, 1.0f, 0.0f, 1.0f };
+	float size = 0.1f;
+	XMFLOAT4 color = { 1.0f, 1.0f, 0.0f, 1.0f };
 
 public:
-	Cube()
+	Cube(float _size, XMFLOAT4 _color )
+		: size(_size), color(_color),
+		device(nullptr), deviceContext(nullptr),
+		result(NULL)
 	{
-		vertices.push_back(Vertex{ {-tSize, tSize, 0.0f}, tColor });
-		vertices.push_back(Vertex{ {tSize, tSize, 0.0f}, tColor });
-		vertices.push_back(Vertex{ {-tSize, -tSize, 0.0f}, tColor });
-		vertices.push_back(Vertex{ {tSize, -tSize, 0.0f}, tColor });
-		vertices.push_back(Vertex{ {-tSize, tSize, 1.0f}, tColor });
-		vertices.push_back(Vertex{ {tSize, tSize, 1.0f}, tColor });
-		vertices.push_back(Vertex{ {-tSize, -tSize, 1.0f}, tColor });
-		vertices.push_back(Vertex{ {tSize, -tSize, 1.0f}, tColor });
+		vertices.push_back(Vertex{ {-1.0, 1.0, 0.0f}, color });
+		vertices.push_back(Vertex{ {1.0, 1.0, 0.0f}, color });
+		vertices.push_back(Vertex{ {-1.0, -1.0, 0.0f}, color });
+		vertices.push_back(Vertex{ {1.0, -1.0, 0.0f}, color });
+		vertices.push_back(Vertex{ {-1.0, 1.0, 1.0f}, color });
+		vertices.push_back(Vertex{ {1.0, 1.0, 1.0f}, color });
+		vertices.push_back(Vertex{ {-1.0, -1.0, 1.0f}, color });
+		vertices.push_back(Vertex{ {1.0, -1.0, 1.0f}, color });
+	}
+	Cube(XMFLOAT4 _color)
+		: Cube(0.1f, _color)
+	{
+
 	}
 
-private:
+	Cube()
+		: Cube(0.1f, { 1.0f, 1.0f, 1.0f, 1.0f })
+	{
+		
+	}
 
-	std::vector<Vertex> vertices;
+
+
+public:
+
+	void Initialize();
+
+	vector<Vertex> vertices;
 	int indices[3 * 2 * 6]
 	{
 		0, 3, 2,
@@ -62,13 +81,47 @@ private:
 	int VBSize = 0;
 	int IBSize = 0;
 
+	XMFLOAT3 localPosition{ 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 localRotation{ 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 localScale{ 0.0f, 0.0f, 0.0f };
+
 public:
-	int GetVBSize();
-	int GetIBSize();
+	void Translate(XMFLOAT3 _value);
+	void Rotation(XMFLOAT3 _value);
+	void Scale(XMFLOAT3 _value);
 
-	const void* GetVBData();
-	const void* GetIBData();
+	HRESULT BuildVertexBuffer();
+	HRESULT BuildIndexBuffer();
+	HRESULT BuildInputLayout(ID3DBlob* _vsByteCode);
+
+public:
+	void Build(ID3DBlob* _vsByteCode);
+	void Draw();
+
+private:
+	void Bind();
+	void UnBind();
+
+public:
+
+	ID3D11Device* device;
+	ID3D11DeviceContext* deviceContext;
+
+	/// Buffer, InputLayout
+	// Vertex Buffer
+	com_ptr<ID3D11Buffer> vertexBuffer;
+	vector<ID3D11Buffer*> VBs;
+
+	// Index Buffer
+	com_ptr<ID3D11Buffer> indexBuffer;
+	vector<ID3D11Buffer*> IBs;
+
+	// Input Layout
+	com_ptr<ID3D11InputLayout> inputLayout;
+
+
+	HRESULT result;
+
 };
-
 
 

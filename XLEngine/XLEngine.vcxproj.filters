@@ -32,6 +32,9 @@
     <ClInclude Include="Cube.h">
       <Filter>1_Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="IObject.h" />
+    <ClInclude Include="XLD3DResources.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="XLEngine.cpp">
@@ -43,6 +46,9 @@
     <ClCompile Include="Cube.cpp">
       <Filter>1_Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="IObject.cpp" />
+    <ClCompile Include="XLD3DResources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
