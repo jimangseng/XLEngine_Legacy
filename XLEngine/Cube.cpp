@@ -2,23 +2,31 @@
 
 void Cube::GetD3DResources()
 {
-	device = XLD3DResources::GetDevice();
-	deviceContext = XLD3DResources::GetDeviceContext();
+	device = XL::D3D11::Resources::device.get();
+	deviceContext = XL::D3D11::Resources::deviceContext.get();
 }
 
 void Cube::Translate(XMFLOAT3 _value)
 {
-	localPosition.x += _value.x;
-	localPosition.y += _value.y;
-	localPosition.z += _value.z;
+	//XMMATRIX m1, m2;
+	//XMFLOAT4X4 f1, f2;
+
+	//m1 = XMLoadFloat4x4(&f1);
+	//m2 = XMLoadFloat4x4(&f2);
+
+	//m1 *= m2;
+
+	//transform *= m;
 }
 
-void Cube::Rotation(XMFLOAT3 _value)
+void Cube::Rotate(XMFLOAT3 _value)
 {
+	//return XMMATRIX();
 }
 
 void Cube::Scale(XMFLOAT3 _value)
 {
+	//return XMMATRIX();
 }
 
 void Cube::UpdateTransform()

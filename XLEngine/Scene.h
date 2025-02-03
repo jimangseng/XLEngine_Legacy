@@ -13,8 +13,7 @@ public:
 	void Build();
 	void Draw();
 	void Finalize();
-private:
+public:
 	std::vector<shared_ptr<IObject>> objects;
 
 };
-

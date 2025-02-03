@@ -3,7 +3,7 @@
 #include "Common.h"
 #include <vector>
 #include "IObject.h"
-#include "XLD3DResources.h"
+#include "Resources.h"
 
 using namespace DirectX;
 using namespace std;
@@ -86,9 +86,9 @@ private:
 	XMFLOAT3 localScale{ 0.0f, 0.0f, 0.0f };
 
 public:
-	void Translate(XMFLOAT3 _value);
-	void Rotation(XMFLOAT3 _value);
-	void Scale(XMFLOAT3 _value);
+	void Translate(XMFLOAT3 _value) override;
+	void Rotate(XMFLOAT3 _value) override;
+	void Scale(XMFLOAT3 _value) override;
 
 private:
 	void UpdateTransform();
@@ -98,9 +98,9 @@ private:
 	void BuildShader();
 
 public:
-	void Initialize();
-	void Build();
-	void Draw();
+	void Initialize() override;
+	void Build() override;
+	void Draw() override;
 
 private:
 	void Bind();

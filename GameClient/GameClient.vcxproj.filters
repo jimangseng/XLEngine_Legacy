@@ -12,6 +12,9 @@
     <ClInclude Include="framework.h">
       <Filter>10_etc</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>0_Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">

@@ -7,14 +7,14 @@
     <Filter Include="10_etc">
       <UniqueIdentifier>{666dc039-7203-4c0c-aca7-a43a6aa2ade6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="1_Geometry">
-      <UniqueIdentifier>{9975ed56-a073-4f7b-bc43-429763cd162f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="2_Scene">
       <UniqueIdentifier>{c8109163-5012-4336-a283-ac8ddc1f7c14}</UniqueIdentifier>
     </Filter>
     <Filter Include="4_HLSL">
       <UniqueIdentifier>{f79c960a-0d9c-4a39-9ad9-0da6a0ef6eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_GameObjects">
+      <UniqueIdentifier>{9975ed56-a073-4f7b-bc43-429763cd162f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -23,45 +23,51 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="XLEngine.h">
+    <ClInclude Include="Engine.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
-    <ClInclude Include="XLD3DRenderer.h">
+    <ClInclude Include="Renderer.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
-      <Filter>1_Geometry</Filter>
+      <Filter>1_GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="IObject.h">
-      <Filter>1_Geometry</Filter>
+      <Filter>1_GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>2_Scene</Filter>
     </ClInclude>
-    <ClInclude Include="XLD3DResources.h">
+    <ClInclude Include="Resources.h">
+      <Filter>0_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="XLEngine.cpp">
+    <ClCompile Include="Engine.cpp">
       <Filter>0_Engine</Filter>
     </ClCompile>
-    <ClCompile Include="XLD3DRenderer.cpp">
+    <ClCompile Include="Renderer.cpp">
       <Filter>0_Engine</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
-      <Filter>1_Geometry</Filter>
+      <Filter>1_GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="IObject.cpp">
-      <Filter>1_Geometry</Filter>
+      <Filter>1_GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>2_Scene</Filter>
     </ClCompile>
-    <ClCompile Include="XLD3DResources.cpp">
+    <ClCompile Include="Resources.cpp">
+      <Filter>0_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Builder.cpp">
       <Filter>0_Engine</Filter>
     </ClCompile>
   </ItemGroup>

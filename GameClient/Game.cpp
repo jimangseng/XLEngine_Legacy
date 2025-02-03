@@ -1,26 +1,23 @@
-#include "../XLEngine/XLEngine.h"
+#include "Game.h"
 
 #pragma comment (lib, "XLEngine.lib")
 
-class Game
+Game::Game(HWND _hWnd)
+	:engine(std::make_unique<XL::XLEngine>(_hWnd))
 {
-public:
-	
-	unique_ptr<XLEngine> engine;
-	
-	void Start(HWND _hWnd)
-	{
-		engine = make_unique<XLEngine>(_hWnd);
-		engine->Initialize();
-	}
+}
 
-	void Update()
-	{
-		engine->Update();
-	}
+void Game::Start()
+{
+	engine->Initialize();
+}
 
-	void Finish()
-	{
-		engine->Finish();
-	}
-};
+void Game::Update()
+{
+	engine->Update();
+}
+
+void Game::Finish()
+{
+	engine->Finalize();
+}
