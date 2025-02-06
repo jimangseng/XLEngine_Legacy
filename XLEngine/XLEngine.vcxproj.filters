@@ -16,6 +16,15 @@
     <Filter Include="1_GameObjects">
       <UniqueIdentifier>{9975ed56-a073-4f7b-bc43-429763cd162f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="0_Engine\01_GamePlayEngine">
+      <UniqueIdentifier>{5dd03d8d-eb06-4591-badd-3a53810b0f8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Engine\02_GraphicsEngine">
+      <UniqueIdentifier>{b032b419-c102-45bf-8102-e4e3ca3903cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Engine\02_GraphicsEngine\021_Components">
+      <UniqueIdentifier>{0eabc8e5-80b7-496a-926c-7e2bef5d6406}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -26,33 +35,36 @@
     <ClInclude Include="Engine.h">
       <Filter>0_Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>0_Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>0_Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>1_GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="IObject.h">
       <Filter>1_GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>2_Scene</Filter>
+    <ClInclude Include="Common.h">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>0_Engine</Filter>
+    <ClInclude Include="GamePlayEngine.h">
+      <Filter>0_Engine\01_GamePlayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsEngine.h">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClInclude>
     <ClInclude Include="Builder.h">
-      <Filter>0_Engine</Filter>
+      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="RenderScene.h" />
+    <ClInclude Include="IRenderable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
-      <Filter>0_Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
       <Filter>0_Engine</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
@@ -61,15 +73,24 @@
     <ClCompile Include="IObject.cpp">
       <Filter>1_GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>2_Scene</Filter>
+    <ClCompile Include="GamePlayEngine.cpp">
+      <Filter>0_Engine\01_GamePlayEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Resources.cpp">
-      <Filter>0_Engine</Filter>
+    <ClCompile Include="GraphicsEngine.cpp">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClCompile>
     <ClCompile Include="Builder.cpp">
-      <Filter>0_Engine</Filter>
+      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="RenderScene.cpp" />
+    <ClCompile Include="IRenderable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">

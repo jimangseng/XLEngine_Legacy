@@ -3,30 +3,22 @@
 #include "Common.h"
 #include <vector>
 #include "IObject.h"
+#include "IRenderable.h"
 #include "Resources.h"
 
 using namespace DirectX;
 using namespace std;
 using namespace winrt;
 
-class Cube : public IObject
+class Cube : public IObject, public IRenderable
 {
 public:
-	// 버텍스에 들어갈 데이터 구조체
-	struct Vertex
-	{
-		XMFLOAT3 position;
-		XMFLOAT4 color;
-	};
-
-	float size = 0.1f;
-	XMFLOAT4 color = { 1.0f, 1.0f, 0.0f, 1.0f };
+	float size;
+	XMFLOAT4 color;
 
 public:
 	Cube(float _size, XMFLOAT4 _color )
-		: size(_size), color(_color),
-		device(nullptr), deviceContext(nullptr),
-		result(NULL)
+		: size(_size), color(_color)
 	{
 		vertices.push_back(Vertex{ {-1.0, 1.0, 0.0f}, color });
 		vertices.push_back(Vertex{ {1.0, 1.0, 0.0f}, color });
@@ -53,7 +45,6 @@ public:
 
 public:
 
-	void GetD3DResources();
 
 	vector<Vertex> vertices;
 	int indices[3 * 2 * 6]
@@ -78,8 +69,7 @@ public:
 	};
 
 private:
-	int VBSize = 0;
-	int IBSize = 0;
+
 
 	XMFLOAT3 localPosition{ 0.0f, 0.0f, 0.0f };
 	XMFLOAT3 localRotation{ 0.0f, 0.0f, 0.0f };
@@ -92,48 +82,31 @@ public:
 
 private:
 	void UpdateTransform();
-	HRESULT BuildVertexBuffer();
-	HRESULT BuildIndexBuffer();
-	HRESULT BuildInputLayout();
-	void BuildShader();
+;
 
 public:
-	void Initialize() override;
-	void Build() override;
-	void Draw() override;
+	void Start() override;
+	void Update() override;
+	void Finish() override;
 
-private:
-	void Bind();
-	void UnBind();
+
+
+/////////////////////////Render 관련
 
 public:
+	virtual void Build() override;
+	virtual void Draw() override;
 
-	ID3D11Device* device;
-	ID3D11DeviceContext* deviceContext;
+protected:
+	virtual void Bind() override;
+	virtual void Unbind() override;
 
-	/// Buffer, InputLayout
-	// Vertex Buffer
-	com_ptr<ID3D11Buffer> vertexBuffer;
-	vector<ID3D11Buffer*> VBs;
-
-	// Index Buffer
-	com_ptr<ID3D11Buffer> indexBuffer;
-	vector<ID3D11Buffer*> IBs;
-
-	// Input Layout
-	com_ptr<ID3D11InputLayout> inputLayout;
-
-	// vs bytecode
-	com_ptr<ID3DBlob> vertexShaderByteCode; // compiled shader bytecodes
-	com_ptr<ID3DBlob> pixelShaderByteCode;
-
-
-	com_ptr<ID3D11VertexShader> vertexShader;
-	com_ptr<ID3D11PixelShader> pixelShader;
-
-
-	HRESULT result;
-
+protected:
+	virtual void GetD3DResources() override;
+	virtual HRESULT BuildVertexBuffer() override;
+	virtual HRESULT BuildIndexBuffer() override;
+	virtual HRESULT BuildInputLayout() override;
+	virtual void BuildShader() override;
 };
 
 

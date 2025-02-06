@@ -7,9 +7,17 @@ using namespace DirectX;
 class IObject
 {
 public:
-	virtual void Initialize() = 0;
-	virtual void Build() = 0;
-	virtual void Draw() = 0;
+	// 버텍스에 들어갈 데이터 구조체
+	struct Vertex
+	{
+		XMFLOAT3 position;
+		XMFLOAT4 color;
+	};
+
+public:
+	virtual void Start() = 0;
+	virtual void Update() = 0;
+	virtual void Finish() = 0;
 
 public:
 	virtual void Translate(XMFLOAT3 _value) = 0;

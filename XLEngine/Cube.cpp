@@ -1,11 +1,5 @@
 #include "Cube.h"
 
-void Cube::GetD3DResources()
-{
-	device = XL::D3D11::Resources::device.get();
-	deviceContext = XL::D3D11::Resources::deviceContext.get();
-}
-
 void Cube::Translate(XMFLOAT3 _value)
 {
 	//XMMATRIX m1, m2;
@@ -29,6 +23,8 @@ void Cube::Scale(XMFLOAT3 _value)
 	//return XMMATRIX();
 }
 
+
+
 void Cube::UpdateTransform()
 {
 	for (auto& vertex : vertices)
@@ -38,6 +34,55 @@ void Cube::UpdateTransform()
 		vertex.position.y += localPosition.y;
 		vertex.position.z += localPosition.z;
 	}
+}
+
+
+//////
+//////
+/////// Game Scene
+void Cube::Start()
+{
+
+}
+
+void Cube::Update()
+{
+	UpdateTransform();
+}
+
+void Cube::Finish()
+{
+}
+
+
+
+///////////////////////////
+//////////////////////////
+/////////////RenderScene
+
+void Cube::Build()
+{
+	GetD3DResources();
+	BuildVertexBuffer();
+	BuildIndexBuffer();
+	BuildShader();
+	BuildInputLayout();
+}
+
+void Cube::Draw()
+{
+	Bind();
+
+	deviceContext->DrawIndexed(36, 0, 0);
+
+	Unbind();
+}
+
+
+void Cube::GetD3DResources()
+{
+	device = XL::D3D11::Resources::device.get();
+	deviceContext = XL::D3D11::Resources::deviceContext.get();
 }
 
 HRESULT Cube::BuildVertexBuffer()
@@ -140,30 +185,6 @@ void Cube::BuildShader()
 
 }
 
-void Cube::Initialize()
-{
-
-}
-
-void Cube::Build()
-{
-	GetD3DResources();
-	UpdateTransform();
-	BuildVertexBuffer();
-	BuildIndexBuffer();
-	BuildShader();
-	BuildInputLayout();
-}
-
-void Cube::Draw()
-{
-	Bind();
-
-	deviceContext->DrawIndexed(36, 0, 0);
-
-	UnBind();
-}
-
 void Cube::Bind()
 {
 	for (auto& vertex : vertices)
@@ -191,7 +212,7 @@ void Cube::Bind()
 	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
 }
 
-void Cube::UnBind()
+void Cube::Unbind()
 {
 	for (auto& vertex : vertices)
 	{
@@ -199,4 +220,6 @@ void Cube::UnBind()
 		vertex.position.y /= size;
 		vertex.position.z /= size;
 	}
+
 }
+

@@ -1,60 +1,21 @@
 #pragma once
 
-#include "Renderer.h"
+#include <Windows.h>
 #include <memory>
 
-#include <Windows.h>
+#include "GamePlayEngine.h"
+#include "GraphicsEngine.h"
 
-using namespace std;
+#include "GameScene.h"
 
 namespace XL
 {
-	class GamePlayEngine
-	{
-	public:
-		void Initialize();
-		void Update();
-		void Finalize();
-
-
-	public:
-
-		GamePlayEngine() = default;
-	};
-
-	class GraphicsEngine
-	{
-	public:
-
-		GraphicsEngine(HWND _hWnd)
-		{
-			XL::D3D11::Resources::hWnd = _hWnd;
-			renderer = make_unique<XL::D3D11::Renderer>();
-		}
-
-		void Initialize();
-		void Update();
-		void Finalize();
-
-	private:
-		void BuildResources();
-
-
-	public:
-		unique_ptr<XL::D3D11::Renderer> renderer;
-
-
-	public:
-
-		GraphicsEngine() = default;
-	};
-
 	class XLEngine
 	{
 	public:
 		XLEngine(HWND _hWnd)
-			: gamePlayEngine(make_unique<GamePlayEngine>()),
-			graphicsEngine(make_unique<GraphicsEngine>(_hWnd))
+			: gamePlayEngine(std::make_unique<GamePlayEngine>()),
+			graphicsEngine(std::make_unique<GraphicsEngine>(_hWnd))
 		{
 		}
 
@@ -64,13 +25,7 @@ namespace XL
 		void Finalize();
 
 	private:
-		unique_ptr<GamePlayEngine> gamePlayEngine;
-		unique_ptr<GraphicsEngine> graphicsEngine;
-
-	private:
-		Scene* CreateScene();
-
-	private:
-		Scene* scene;
+		std::unique_ptr<GamePlayEngine> gamePlayEngine;
+		std::unique_ptr<GraphicsEngine> graphicsEngine;
 	};
 }

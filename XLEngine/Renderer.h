@@ -2,7 +2,7 @@
 
 #include "common.h"
 #include <vector>
-#include "Scene.h"
+#include "RenderScene.h"
 
 using namespace DirectX;
 using namespace winrt;
@@ -35,13 +35,13 @@ namespace XL
 			void UnbindView();
 
 		public:
-			void SetCurrentScene(Scene* _scene);
+			void SetCurrentScene(XL::Graphics::RenderScene* _scene);
 
 		private:
 			// "XLD3DResource" 에서 com_ptr로 관리하며, 생 포인터를 받아와 사용한다
 			ID3D11DeviceContext* deviceContext;
 
-			Scene* currentScene;
+			XL::Graphics::RenderScene* currentScene;
 		};
 	}
 }

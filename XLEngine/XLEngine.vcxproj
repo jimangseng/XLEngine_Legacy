@@ -135,9 +135,13 @@
   <ItemGroup>
     <ClCompile Include="Builder.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="GamePlayEngine.cpp" />
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GraphicsEngine.cpp" />
+    <ClCompile Include="IRenderable.cpp" />
+    <ClCompile Include="RenderScene.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="IObject.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Engine.cpp" />
   </ItemGroup>
@@ -145,9 +149,13 @@
     <ClInclude Include="Builder.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="GamePlayEngine.h" />
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GraphicsEngine.h" />
+    <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="RenderScene.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="IObject.h" />
-    <ClInclude Include="Scene.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Engine.h" />
   </ItemGroup>

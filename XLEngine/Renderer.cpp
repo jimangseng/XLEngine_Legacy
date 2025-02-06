@@ -62,7 +62,7 @@ void XL::D3D11::Renderer::UnbindView()
 	//XL::D3D11::Resources::swapChain->Present1(0, 0, nullptr);
 }
 
-void XL::D3D11::Renderer::SetCurrentScene(Scene* _scene)
+void XL::D3D11::Renderer::SetCurrentScene(XL::Graphics::RenderScene* _scene)
 {
-	currentScene = _scene;
+    currentScene = _scene;
 }
