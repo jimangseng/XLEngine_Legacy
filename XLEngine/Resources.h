@@ -43,42 +43,54 @@ namespace XL
 			//	return deviceContext.put();
 			//}
 
+		public:
+			void Build();
+
+		private:
+			void BuildDeviceAndSwapChain();
+			void SetRasterizerState();
+			void BuildRenderTargetView();
+			void BuildDepthStencilView();
+			void SetDepthStencilState();
+			void SetBlendState();
+
 		// ÀÚ¿øµé
 		public:
-			static com_ptr<ID3D11Device> device;
-			static com_ptr<ID3D11DeviceContext> deviceContext;
+			com_ptr<ID3D11Device> device;
+			com_ptr<ID3D11DeviceContext> deviceContext;
 
+			com_ptr<IDXGIFactory2> factory;
+			com_ptr<IDXGIAdapter1> adapter;
 
-			static com_ptr<IDXGIFactory2> factory;
-			static com_ptr<IDXGIAdapter1> adapter;
+			com_ptr<IDXGISwapChain1> swapChain;
 
-			static com_ptr<IDXGISwapChain1> swapChain;
+			com_ptr<ID3D11Texture2D> renderTarget;
+			com_ptr<ID3D11RenderTargetView> renderTargetView;
+			std::vector<ID3D11RenderTargetView*> RTVs;	// render target views
 
-			static com_ptr<ID3D11Texture2D> renderTarget;
-			static com_ptr<ID3D11RenderTargetView> renderTargetView;
-			static std::vector<ID3D11RenderTargetView*> RTVs;	// render target views
+			com_ptr<ID3D11Texture2D> depthStencilBuffer;
+			com_ptr<ID3D11DepthStencilView> depthStencilView;
 
-			static com_ptr<ID3D11Texture2D> depthStencilBuffer;
-			static com_ptr<ID3D11DepthStencilView> depthStencilView;
+			com_ptr<ID3D11DepthStencilState> depthStencilState;
 
-			static com_ptr<ID3D11DepthStencilState> depthStencilState;
+			DXGI_PRESENT_PARAMETERS presentParams;	// swap chain present parameters
 
-			static DXGI_PRESENT_PARAMETERS presentParams;	// swap chain present parameters
+			com_ptr<ID3D11ShaderResourceView> shaderResourceView;
 
-			static com_ptr<ID3D11ShaderResourceView> shaderResourceView;
+			com_ptr<ID3D11RasterizerState> rasterizerState;
 
-
-			static com_ptr<ID3D11RasterizerState> rasterizerState;
-
-			static com_ptr<ID3D11BlendState> blendState;
+			com_ptr<ID3D11BlendState> blendState;
 
 			// misc
-			static int ScreenWidth;
-			static int ScreenHeight;
+			int ScreenWidth;
+			int ScreenHeight;
 
-			static HWND hWnd;	// window handle
+			HWND hWnd;	// window handle
 
-			//static const float backgroundColor[4];
+		private:
+
+			HRESULT result;
+			//const float backgroundColor[4];
 		};
 	}
 }

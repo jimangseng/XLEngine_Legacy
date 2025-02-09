@@ -1,5 +1,5 @@
 ﻿#include "framework.h"
-#include "Game.h"
+#include "GameProcess.h"
 
 
 HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow);
@@ -13,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	HWND hWnd = InitializeWindow(hInstance, nCmdShow);
 	MSG msg;
 	
-	Game myGame(hWnd);
+	GameProcess myGame(hWnd);
 	myGame.Start();
 
 	while (true)

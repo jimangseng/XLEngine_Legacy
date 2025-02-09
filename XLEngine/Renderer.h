@@ -3,6 +3,7 @@
 #include "common.h"
 #include <vector>
 #include "RenderScene.h"
+#include "Resources.h"
 
 using namespace DirectX;
 using namespace winrt;
@@ -38,6 +39,8 @@ namespace XL
 			void SetCurrentScene(XL::Graphics::RenderScene* _scene);
 
 		private:
+			Resources& resources = Resources::GetInstance();
+
 			// "XLD3DResource" 에서 com_ptr로 관리하며, 생 포인터를 받아와 사용한다
 			ID3D11DeviceContext* deviceContext;
 

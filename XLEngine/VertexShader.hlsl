@@ -1,5 +1,6 @@
 struct VS_in
 {
+	float3 positionL : Localposition;
 	float3 position : Position;
 	float4 color : color;
 };

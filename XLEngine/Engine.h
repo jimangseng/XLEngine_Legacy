@@ -20,9 +20,12 @@ namespace XL
 		}
 
 	public:
-		void Initialize();
+		void Initialize(GamePlay::GameScene* _gameScene);
 		void Update();
 		void Finalize();
+
+	private:
+		void SyncScene(GamePlay::GameScene* gameScene);
 
 	private:
 		std::unique_ptr<GamePlayEngine> gamePlayEngine;

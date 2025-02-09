@@ -1,68 +1,125 @@
 #include "Cube.h"
 
+Cube::Cube(float _size, XMFLOAT4 _color)
+	: size(_size), color(_color)
+{
+	vertices.push_back(Vertex{ {-1.0, 1.0, 0.0f}, {}, color });
+	vertices.push_back(Vertex{ {1.0, 1.0, 0.0f}, {}, color });
+	vertices.push_back(Vertex{ {-1.0, -1.0, 0.0f}, {}, color });
+	vertices.push_back(Vertex{ {1.0, -1.0, 0.0f}, {}, color });
+	vertices.push_back(Vertex{ {-1.0, 1.0, 1.0f}, {}, color });
+	vertices.push_back(Vertex{ {1.0, 1.0, 1.0f}, {}, color });
+	vertices.push_back(Vertex{ {-1.0, -1.0, 1.0f}, {}, color });
+	vertices.push_back(Vertex{ {1.0, -1.0, 1.0f}, {}, color });
+}
+
+void Cube::SetPosition(XMFLOAT3 _value)
+{
+	wPosition = _value;
+}
+
 void Cube::Translate(XMFLOAT3 _value)
 {
-	//XMMATRIX m1, m2;
-	//XMFLOAT4X4 f1, f2;
-
-	//m1 = XMLoadFloat4x4(&f1);
-	//m2 = XMLoadFloat4x4(&f2);
-
-	//m1 *= m2;
-
-	//transform *= m;
+	wPosition.x += _value.x;
+	wPosition.y += _value.y;
+	wPosition.z += _value.z;
 }
 
-void Cube::Rotate(XMFLOAT3 _value)
-{
-	//return XMMATRIX();
-}
+//void Cube::Yaw(float _angle)
+//{
+//	// 각도를 라디안으로 변환
+//	float radian = _angle * 3.14159265358979323846f / 180.0f;
+//
+//	float cosTheta = cos(radian);
+//	float sinTheta = sin(radian);
+//
+//	// 모든 버텍스에 회전 적용
+//	for (auto& vertex : vertices)
+//	{
+//
+//		float x = vertex.localPosition.x;
+//		float z = vertex.localPosition.x;
+//
+//		float newX = x * cosTheta + z * sinTheta;
+//		float newZ = -x * sinTheta + z * cosTheta;
+//
+//		vertex.localPosition.x = newX;
+//		vertex.localPosition.z = newZ;
+//
+//
+//	}
+//}
+//
+//void Cube::Pitch(float _angle)
+//{
+//
+//}
+//
+//void Cube::Roll(float _angle)
+//{
+//
+//}
 
 void Cube::Scale(XMFLOAT3 _value)
 {
-	//return XMMATRIX();
+
 }
-
-
-
-void Cube::UpdateTransform()
-{
-	for (auto& vertex : vertices)
-	{
-		// Update Translate
-		vertex.position.x += localPosition.x;
-		vertex.position.y += localPosition.y;
-		vertex.position.z += localPosition.z;
-	}
-}
-
 
 //////
 //////
 /////// Game Scene
 void Cube::Start()
 {
+	for (auto& vertex : vertices)
+	{
+		vertex.localPosition.x *= size;
+		vertex.localPosition.y *= size;
+		vertex.localPosition.z *= size;
+
+		vertex.worldPosition.x = vertex.localPosition.x + wPosition.x;
+		vertex.worldPosition.y = vertex.localPosition.y + wPosition.y;
+		vertex.worldPosition.z = vertex.localPosition.z + wPosition.z;
+
+		vertex.color = color;
+	}
 
 }
 
 void Cube::Update()
 {
-	UpdateTransform();
+	for (auto& vertex : vertices)
+	{
+		vertex.worldPosition.x = vertex.localPosition.x + wPosition.x;
+		vertex.worldPosition.y = vertex.localPosition.y + wPosition.y;
+		vertex.worldPosition.z = vertex.localPosition.z + wPosition.z;
+	}
 }
 
 void Cube::Finish()
 {
-}
 
+}
 
 
 ///////////////////////////
 //////////////////////////
 /////////////RenderScene
 
-void Cube::Build()
+void Cube::Initialize()
 {
 	GetD3DResources();
+}
+
+void Cube::Build()
+{
+	BuildVertexBuffer();
+	BuildIndexBuffer();
+	BuildShader();
+	BuildInputLayout();
+}
+
+void Cube::RenderUpdate()
+{
 	BuildVertexBuffer();
 	BuildIndexBuffer();
 	BuildShader();
@@ -81,8 +138,8 @@ void Cube::Draw()
 
 void Cube::GetD3DResources()
 {
-	device = XL::D3D11::Resources::device.get();
-	deviceContext = XL::D3D11::Resources::deviceContext.get();
+	device = resources.device.get();
+	deviceContext = resources.deviceContext.get();
 }
 
 HRESULT Cube::BuildVertexBuffer()
@@ -144,14 +201,15 @@ HRESULT Cube::BuildInputLayout()
 	// Create Input Layout
 	D3D11_INPUT_ELEMENT_DESC intputElementDesc[] =
 	{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"LOCALPOSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0},
 	};
 
 	result = device->CreateInputLayout
 	(
 		intputElementDesc,
-		2,
+		3,
 		vertexShaderByteCode->GetBufferPointer(),
 		vertexShaderByteCode->GetBufferSize(),
 		inputLayout.put()
@@ -187,16 +245,6 @@ void Cube::BuildShader()
 
 void Cube::Bind()
 {
-	for (auto& vertex : vertices)
-	{
-		// Update Position and Color
-		vertex.position.x *= size;
-		vertex.position.y *= size;
-		vertex.position.z *= size;
-
-		vertex.color = color;
-	}
-
 	BuildVertexBuffer();
 
 	// binding InputLayout to pipline IA Stage 
@@ -214,12 +262,11 @@ void Cube::Bind()
 
 void Cube::Unbind()
 {
-	for (auto& vertex : vertices)
-	{
-		vertex.position.x /= size;
-		vertex.position.y /= size;
-		vertex.position.z /= size;
-	}
+	//wVertices.clear();
+
+	//for (auto& vertex : lVertices)
+	//{
+	//	wVertices.emplace_back(vertex);
+	//}
 
 }
-

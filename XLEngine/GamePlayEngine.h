@@ -12,10 +12,10 @@ namespace XL
 		void Finalize();
 
 	public:
-
-		GamePlayEngine() = default;
-
-	public:
+		XL::GamePlay::GameScene* GetScene() { return scene; }
+		void SetScene(XL::GamePlay::GameScene* _scene) { scene = _scene; }
+	
+	private:
 		XL::GamePlay::GameScene* scene;
 	};
 }

@@ -1,17 +1,12 @@
 #include "GameScene.h"
+#include "Cube.h"
 
 void XL::GamePlay::GameScene::Start()
 {
-	//
 	for (auto& object : objects)
 	{
 		object->Start();
 	}
-}
-
-void XL::GamePlay::GameScene::AddObject(std::shared_ptr<IObject> object)
-{
-	objects.emplace_back(object);
 }
 
 void XL::GamePlay::GameScene::Update()

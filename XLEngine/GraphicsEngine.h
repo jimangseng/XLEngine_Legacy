@@ -4,7 +4,6 @@
 #include "Renderer.h"
 #include "RenderScene.h"
 #include "Resources.h"
-#include "GameScene.h"
 
 namespace XL
 {
@@ -14,7 +13,7 @@ namespace XL
 
 		GraphicsEngine(HWND _hWnd)
 		{
-			XL::D3D11::Resources::hWnd = _hWnd;
+			XL::D3D11::Resources::GetInstance().hWnd = _hWnd;
 			renderer = make_unique<XL::D3D11::Renderer>();
 
 			scene = std::make_unique<XL::Graphics::RenderScene>();
@@ -24,19 +23,13 @@ namespace XL
 		void Update();
 		void Finalize();
 
-	private:
-		void BuildResources();
-
+	public:
+		void SyncScene(XL::GamePlay::GameScene* gameScene);
 
 	public:
 		unique_ptr<XL::D3D11::Renderer> renderer;
 
-
-	public:
-
-		GraphicsEngine() = default;
-
-	public:
+	private:
 		std::unique_ptr< XL::Graphics::RenderScene> scene;
 	};
 }

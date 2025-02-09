@@ -50,18 +50,24 @@
     <ClInclude Include="GraphicsEngine.h">
       <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Builder.h">
-      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClInclude>
     <ClInclude Include="Resources.h">
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h" />
-    <ClInclude Include="RenderScene.h" />
-    <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="GameScene.h">
+      <Filter>2_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderScene.h">
+      <Filter>2_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>1_GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="XLEngine.h">
+      <Filter>10_etc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -79,18 +85,21 @@
     <ClCompile Include="GraphicsEngine.cpp">
       <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Builder.cpp">
-      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClCompile>
     <ClCompile Include="Resources.cpp">
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="RenderScene.cpp" />
-    <ClCompile Include="IRenderable.cpp" />
+    <ClCompile Include="GameScene.cpp">
+      <Filter>2_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderScene.cpp">
+      <Filter>2_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderable.cpp">
+      <Filter>1_GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">

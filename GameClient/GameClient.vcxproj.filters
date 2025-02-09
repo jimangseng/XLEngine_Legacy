@@ -12,16 +12,22 @@
     <ClInclude Include="framework.h">
       <Filter>10_etc</Filter>
     </ClInclude>
+    <ClInclude Include="GameProcess.h">
+      <Filter>0_Game</Filter>
+    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>0_Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="GameProcess.cpp">
       <Filter>0_Game</Filter>
     </ClCompile>
     <ClCompile Include="EntryPoint.cpp">
       <Filter>10_etc</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>0_Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

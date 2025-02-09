@@ -1,19 +1,21 @@
 #pragma once
 
-#include <windows.h>
-#include <memory>
-#include "../XLEngine/Engine.h"
-
+#include "../XLEngine/GameScene.h"
+#include "../XLEngine/Cube.h"
 class Game
 {
-public:
-	Game(HWND _hWnd);
 
 public:
 	void Start();
 	void Update();
 	void Finish();
 
+public:
+	XL::GamePlay::GameScene* GetScene() { return &scene; }
+
 private:
-	std::unique_ptr<XL::XLEngine> engine;
+	XL::GamePlay::GameScene scene;
+	std::vector<Cube> cubes;
+
+	float time = 0.0f;
 };

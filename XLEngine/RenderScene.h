@@ -13,20 +13,14 @@ namespace XL
 		class RenderScene
 		{
 		public:
-			void Start();
+			void Initialize();
+			void RenderUpdate();
 			void Build();
 			void Draw();
 			void Finalize();
-
-		public:
-			void Sync(XL::GamePlay::GameScene* gameScene);
 		
-		private:
-			void SetGameObjects(std::vector<std::shared_ptr<IObject>> _gameObjects);
-
 		public:
-			std::vector<std::shared_ptr<IRenderable>> objects;
-			std::vector<std::shared_ptr<IObject>> gameObjects;
+			std::vector<std::shared_ptr<IRenderable>> renderObjects;
 		};
 	}
 }

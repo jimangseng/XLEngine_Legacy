@@ -17,37 +17,21 @@ public:
 	XMFLOAT4 color;
 
 public:
-	Cube(float _size, XMFLOAT4 _color )
-		: size(_size), color(_color)
-	{
-		vertices.push_back(Vertex{ {-1.0, 1.0, 0.0f}, color });
-		vertices.push_back(Vertex{ {1.0, 1.0, 0.0f}, color });
-		vertices.push_back(Vertex{ {-1.0, -1.0, 0.0f}, color });
-		vertices.push_back(Vertex{ {1.0, -1.0, 0.0f}, color });
-		vertices.push_back(Vertex{ {-1.0, 1.0, 1.0f}, color });
-		vertices.push_back(Vertex{ {1.0, 1.0, 1.0f}, color });
-		vertices.push_back(Vertex{ {-1.0, -1.0, 1.0f}, color });
-		vertices.push_back(Vertex{ {1.0, -1.0, 1.0f}, color });
-	}
+	Cube(float _size, XMFLOAT4 _color );
+
 	Cube(XMFLOAT4 _color)
 		: Cube(0.1f, _color)
 	{
-
 	}
 
 	Cube()
 		: Cube(0.1f, { 1.0f, 1.0f, 1.0f, 1.0f })
-	{
-		
+	{	
 	}
 
-
-
 public:
-
-
 	vector<Vertex> vertices;
-	int indices[3 * 2 * 6]
+	const int indices[3 * 2 * 6]
 	{
 		0, 3, 2,
 		0, 1, 3,
@@ -71,30 +55,30 @@ public:
 private:
 
 
-	XMFLOAT3 localPosition{ 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 localRotation{ 0.0f, 0.0f, 0.0f };
-	XMFLOAT3 localScale{ 0.0f, 0.0f, 0.0f };
+	XMFLOAT3 wPosition{ 0.0f, 0.0f, 0.0f };
 
 public:
+	void SetPosition(XMFLOAT3 _value) override;
 	void Translate(XMFLOAT3 _value) override;
-	void Rotate(XMFLOAT3 _value) override;
+	//void Yaw(float _angle) override;
+	//void Pitch(float _angle) override;
+	//void Roll(float _angle) override;
 	void Scale(XMFLOAT3 _value) override;
-
-private:
-	void UpdateTransform();
-;
 
 public:
 	void Start() override;
 	void Update() override;
 	void Finish() override;
 
-
-
 /////////////////////////Render 관련
+// todo: 자원 생성, 렌더링 관련 로직이 여기 있는 것이 불합리하게 느껴지므로 수정할 것
+private:
+	XL::D3D11::Resources& resources = XL::D3D11::Resources::GetInstance();
 
 public:
+	virtual void Initialize() override;
 	virtual void Build() override;
+	virtual void RenderUpdate() override;
 	virtual void Draw() override;
 
 protected:
