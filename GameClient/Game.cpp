@@ -5,27 +5,30 @@ using namespace XL::GamePlay;
 
 void Game::Start()
 {
-	Cube cube;
+	//std::vector<Cube> cubes;
 
-	cube.size = 0.8f;
-	cube.color = XMFLOAT4{ 0.1f, 0.3f, 0.6f, 1.0f };	// ÇÏ´Ã
-	cubes.emplace_back(cube);
+	Cube cube1;
+	cube1.size = 0.8f;
+	cube1.color = XL::Math::Vector4(0.1f, 0.3f, 0.6f, 1.0f);	// ÇÏ´Ã
+	scene.AddObject(cube1);
 
-	cube.size = 0.5f;
-	cube.color = XMFLOAT4{ 0.6f, 0.1f, 0.1f, 1.0f };	// »¡°­
-	cubes.emplace_back(cube);
+	//Cube cube2;
+	//cube2.size = 0.4f;
+	//cube2.color = XL::Math::Vector4(0.6f, 0.1f, 0.1f, 1.0f);	// »¡°­
+	//scene.AddObject(cube2);
 
-	cube.size = 0.3f;
-	cube.color = XMFLOAT4{ 0.1f, 0.1f, 0.6f, 1.0f };	// ÆÄ¶û
-	cubes.emplace_back(cube);
+	//Cube cube3;
+	//cube3.size = 0.3f;
+	//cube3.color = XL::Math::Vector4( 0.1f, 0.1f, 0.6f, 1.0f );	// ÆÄ¶û
+	//scene.AddObject(cube3);
 
-	cube.size = 0.1f;
-	cube.color = XMFLOAT4{ 0.5f, 0.5f, 0.2f, 1.0f };	// ³ë¶û
-	cube.Translate({ 0.0f, 0.3f, 0.0f });
-	//cube.Yaw(30.0f);	// todo: Transform ±¸Çö
-	cubes.emplace_back(cube);
-
-	scene.AddObject(cubes);
+	//Cube cube4;
+	//cube4.size = 0.1f;
+	//cube4.color = XL::Math::Vector4( 0.5f, 0.5f, 0.2f, 1.0f );	// ³ë¶û
+	//cube4.Translate(0.1f, 0.0f, 0.0f);
+	////cube4.Yaw(30.0f);	// todo: Transform ±¸Çö
+	////cube4.Rotate(0.0f, 30.0f, 0.0f);
+	//scene.AddObject(cube4);
 
 }
 
@@ -35,9 +38,14 @@ void Game::Update()
 	time += 0.02f;
 
 	// todo: scene ¾ÈÀ¸·Î Á¢±ÙÇÏÁö ¾Êµµ·Ï ¼öÁ¤
-	scene.objects.at(0)->SetPosition({ 0.0f, sin(time), 0.0f });
-	scene.objects.at(1)->SetPosition({ sin(time), 0.0f, 0.0f});
-	scene.objects.at(2)->SetPosition({ cos(time), sin(time), 0.0f});
+	//scene.GetObject(0)->SetPosition(0.0f, sin(time), 0.0f);
+	//scene.GetObject(1)->SetPosition(sin(time), 0.0f, 0.0f);
+	//scene.GetObject(2)->SetPosition(cos(time), sin(time), 0.0f);
+	
+	scene.GetObject(0)->Rotate(time, time, 0.0f);
+	//scene.GetObject(1)->Rotate(time, time, time);
+	//scene.GetObject(2)->Rotate(time, 0.0f, time);
+	//scene.GetObject(3)->Rotate(0.0f, time, time);
 }
 
 void Game::Finish()

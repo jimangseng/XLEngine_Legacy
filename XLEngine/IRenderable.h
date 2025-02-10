@@ -40,6 +40,9 @@ protected:
 	com_ptr<ID3D11Buffer> indexBuffer;
 	vector<ID3D11Buffer*> IBs;
 
+	// Constant Buffer
+	com_ptr<ID3D11Buffer> constantBuffer;
+
 	// Input Layout
 	com_ptr<ID3D11InputLayout> inputLayout;
 

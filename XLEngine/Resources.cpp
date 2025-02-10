@@ -73,7 +73,7 @@ void XL::D3D11::Resources::BuildDeviceAndSwapChain()
 		{1, 0},
 		DXGI_USAGE_RENDER_TARGET_OUTPUT,
 		2,
-		DXGI_SCALING_NONE,
+		DXGI_SCALING_STRETCH,
 		DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL,
 		DXGI_ALPHA_MODE_IGNORE,
 		0
@@ -95,7 +95,7 @@ void XL::D3D11::Resources::SetRasterizerState()
 {
 	D3D11_RASTERIZER_DESC rasterizerDesc =
 	{
-		D3D11_FILL_SOLID,
+		D3D11_FILL_WIREFRAME,
 		D3D11_CULL_NONE,
 		true,
 		0,

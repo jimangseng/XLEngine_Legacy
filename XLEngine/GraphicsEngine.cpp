@@ -29,7 +29,7 @@ void XL::GraphicsEngine::SyncScene(XL::GamePlay::GameScene* _gameScene)
 {
 	scene->renderObjects.clear();
 
-	for (auto& gameObject : _gameScene->objects)
+	for (auto& gameObject : _gameScene->GetObjects())
 	{
 		// TODO:
 		// 어떻게 IObject에서 IRenderable로 변환할 것인가?

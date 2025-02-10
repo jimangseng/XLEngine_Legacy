@@ -5,3 +5,7 @@
 
 #include "GameScene.h"
 #include "Cube.h"
+
+#include "../XLMath/XLMath.h"
+
+#undef GetObject

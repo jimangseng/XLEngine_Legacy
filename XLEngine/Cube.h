@@ -5,28 +5,69 @@
 #include "IObject.h"
 #include "IRenderable.h"
 #include "Resources.h"
+#include "iostream"
 
 using namespace DirectX;
 using namespace std;
 using namespace winrt;
 
+// 버텍스에 들어갈 데이터 구조체
+struct Vertex
+{
+	XL::Math::Vector3 localPosition;
+	XL::Math::Vector3 worldPosition;
+	XL::Math::Vector4 color;
+};
+
 class Cube : public IObject, public IRenderable
 {
+
+
 public:
 	float size;
-	XMFLOAT4 color;
+	XL::Math::Vector4 color;
 
 public:
-	Cube(float _size, XMFLOAT4 _color );
+	~Cube() = default;
 
-	Cube(XMFLOAT4 _color)
-		: Cube(0.1f, _color)
+	Cube(const Cube& _cube) = delete;
+	Cube& operator= (const Cube& _cube) = delete;
+
+	Cube(Cube&& _cube)
 	{
+		size = _cube.size;
+		color = _cube.color;
+		vertices = std::move(_cube.vertices);
+		wPosition = std::move(_cube.wPosition);
+
+		translation = std::move(_cube.translation);
+		rotation = std::move(_cube.rotation);
+		scale = std::move(_cube.scale);
 	}
 
 	Cube()
 		: Cube(0.1f, { 1.0f, 1.0f, 1.0f, 1.0f })
-	{	
+	{
+	}
+
+	Cube(XL::Math::Vector4 _color)
+		: Cube(0.1f, _color)
+	{
+	}
+
+	Cube(float _size, XL::Math::Vector4 _color )
+		: size(_size), color(_color)
+	{
+		vertices.emplace_back(std::move( Vertex{ {-1.0, 1.0, 0.0f}, {}, color } ));
+		vertices.emplace_back(std::move( Vertex{ {1.0, 1.0, 0.0f}, {}, color } ));
+		vertices.emplace_back(std::move( Vertex{ {-1.0, -1.0, 0.0f}, {}, color } ));
+		vertices.emplace_back(std::move( Vertex{ {1.0, -1.0, 0.0f}, {}, color } ));
+		vertices.emplace_back(std::move( Vertex{ {-1.0, 1.0, 1.0f}, {}, color } ));
+		vertices.emplace_back(std::move( Vertex{ {1.0, 1.0, 1.0f}, {}, color } ));
+		vertices.emplace_back(std::move( Vertex{ {-1.0, -1.0, 1.0f}, {}, color } ));
+		vertices.emplace_back(std::move( Vertex{ {1.0, -1.0, 1.0f}, {}, color } ));
+
+		// 이해하기
 	}
 
 public:
@@ -53,17 +94,27 @@ public:
 	};
 
 private:
+	XL::Math::Vector3 wPosition;
+	
+private:
+	//XL::Math::Matrix translation;
+	//XL::Math::Matrix rotation;
+	//XL::Math::Matrix scale;
+	
+	XMMATRIX translation = XMMatrixIdentity();
+	XMMATRIX rotation = XMMatrixIdentity();
+	XMMATRIX scale = XMMatrixIdentity();
 
-
-	XMFLOAT3 wPosition{ 0.0f, 0.0f, 0.0f };
+	XMMATRIX worldMatrix;
 
 public:
-	void SetPosition(XMFLOAT3 _value) override;
-	void Translate(XMFLOAT3 _value) override;
+	void SetPosition(float x, float y, float z) override;
+	void Translate(float x, float y, float z) override;
 	//void Yaw(float _angle) override;
 	//void Pitch(float _angle) override;
 	//void Roll(float _angle) override;
-	void Scale(XMFLOAT3 _value) override;
+	void Rotate(float x, float y, float z) override;
+	void Scale(float x, float y, float z) override;
 
 public:
 	void Start() override;
@@ -89,6 +140,7 @@ protected:
 	virtual void GetD3DResources() override;
 	virtual HRESULT BuildVertexBuffer() override;
 	virtual HRESULT BuildIndexBuffer() override;
+			HRESULT BuildConstantBuffer();
 	virtual HRESULT BuildInputLayout() override;
 	virtual void BuildShader() override;
 };

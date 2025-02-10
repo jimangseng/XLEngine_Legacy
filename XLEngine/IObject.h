@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DirectXMath.h"
+#include "../XLMath/XLMath.h"
 
 using namespace DirectX;
 
@@ -8,26 +8,18 @@ using namespace DirectX;
 class IObject
 {
 public:
-	// 버텍스에 들어갈 데이터 구조체
-	struct Vertex
-	{
-		XMFLOAT3 localPosition;
-		XMFLOAT3 worldPosition;
-		XMFLOAT4 color;
-	};
-
-public:
 	virtual void Start() = 0;
 	virtual void Update() = 0;
 	virtual void Finish() = 0;
 
 public:
-	virtual void SetPosition(XMFLOAT3 _value) = 0;
-	virtual void Translate(XMFLOAT3 _value) = 0;
+	virtual void SetPosition(float x, float y, float z) = 0;
+	virtual void Translate(float x, float y, float z) = 0;
 	//virtual void Yaw(float _angle) = 0;
 	//virtual void Pitch(float _angle) = 0;
 	//virtual void Roll(float _angle) = 0;
-	virtual void Scale(XMFLOAT3 _value) = 0;
+	virtual void Rotate(float x, float y, float z) = 0;
+	virtual void Scale(float x, float y, float z) = 0;
 
 protected:
 	XMMATRIX transfom = DirectX::XMMatrixIdentity();

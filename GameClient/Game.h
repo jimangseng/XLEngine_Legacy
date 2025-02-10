@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "../XLEngine/GameScene.h"
 #include "../XLEngine/Cube.h"
 class Game
@@ -15,7 +16,6 @@ public:
 
 private:
 	XL::GamePlay::GameScene scene;
-	std::vector<Cube> cubes;
 
 	float time = 0.0f;
 };

@@ -1,3 +1,8 @@
+cbuffer VS_constantBuffer : register(b0)
+{
+	matrix world;
+}
+
 struct VS_in
 {
 	float3 positionL : Localposition;
@@ -13,7 +18,7 @@ struct VS_out
 VS_out VS (VS_in _in)
 {
 	VS_out _out;
-	_out.position = float4(_in.position, 1.0f);
+	_out.position = mul(float4(_in.positionL, 1.0f), world);
 	_out.color = _in.color;
 	
 	return _out;

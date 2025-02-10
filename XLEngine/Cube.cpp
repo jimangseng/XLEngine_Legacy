@@ -1,30 +1,34 @@
+#include "../XLMath/XLMath.h"
 #include "Cube.h"
+#include "DirectXMath.h"
 
-Cube::Cube(float _size, XMFLOAT4 _color)
-	: size(_size), color(_color)
+using namespace XL::Math;
+
+void Cube::SetPosition(float x, float y, float z)
 {
-	vertices.push_back(Vertex{ {-1.0, 1.0, 0.0f}, {}, color });
-	vertices.push_back(Vertex{ {1.0, 1.0, 0.0f}, {}, color });
-	vertices.push_back(Vertex{ {-1.0, -1.0, 0.0f}, {}, color });
-	vertices.push_back(Vertex{ {1.0, -1.0, 0.0f}, {}, color });
-	vertices.push_back(Vertex{ {-1.0, 1.0, 1.0f}, {}, color });
-	vertices.push_back(Vertex{ {1.0, 1.0, 1.0f}, {}, color });
-	vertices.push_back(Vertex{ {-1.0, -1.0, 1.0f}, {}, color });
-	vertices.push_back(Vertex{ {1.0, -1.0, 1.0f}, {}, color });
+	wPosition = Vector3(x, y, z);
 }
 
-void Cube::SetPosition(XMFLOAT3 _value)
+void Cube::Translate(float x, float y, float z)
 {
-	wPosition = _value;
+	//Vector3 vector = Vector3(x, y, z);
+	//wPosition = wPosition + vector;
+
+	//Matrix translation(vector);
+	translation = XMMatrixTranslation(x, y, z);
 }
 
-void Cube::Translate(XMFLOAT3 _value)
+void Cube::Rotate(float x, float y, float z)
 {
-	wPosition.x += _value.x;
-	wPosition.y += _value.y;
-	wPosition.z += _value.z;
+	rotation = XMMatrixRotationRollPitchYaw(x, y, z);	
 }
 
+void Cube::Scale(float x, float y, float z)
+{
+	scale = XMMatrixScaling(x, y, z);
+}
+
+// todo: 직접 구현
 //void Cube::Yaw(float _angle)
 //{
 //	// 각도를 라디안으로 변환
@@ -59,26 +63,25 @@ void Cube::Translate(XMFLOAT3 _value)
 //{
 //
 //}
-
-void Cube::Scale(XMFLOAT3 _value)
-{
-
-}
+//
+//void Cube::Scale(XMFLOAT3 _value)
+//{
+//
+//}
 
 //////
 //////
 /////// Game Scene
 void Cube::Start()
 {
+	worldMatrix = XMMatrixMultiply(XMMatrixMultiply(scale, rotation), translation);
+
 	for (auto& vertex : vertices)
 	{
-		vertex.localPosition.x *= size;
-		vertex.localPosition.y *= size;
-		vertex.localPosition.z *= size;
 
-		vertex.worldPosition.x = vertex.localPosition.x + wPosition.x;
-		vertex.worldPosition.y = vertex.localPosition.y + wPosition.y;
-		vertex.worldPosition.z = vertex.localPosition.z + wPosition.z;
+		vertex.localPosition*= size;
+
+		vertex.worldPosition = vertex.localPosition + wPosition;
 
 		vertex.color = color;
 	}
@@ -87,11 +90,11 @@ void Cube::Start()
 
 void Cube::Update()
 {
+	worldMatrix = XMMatrixMultiply(XMMatrixMultiply(scale, rotation), translation);
+
 	for (auto& vertex : vertices)
 	{
-		vertex.worldPosition.x = vertex.localPosition.x + wPosition.x;
-		vertex.worldPosition.y = vertex.localPosition.y + wPosition.y;
-		vertex.worldPosition.z = vertex.localPosition.z + wPosition.z;
+		vertex.worldPosition = vertex.localPosition + wPosition;
 	}
 }
 
@@ -114,6 +117,7 @@ void Cube::Build()
 {
 	BuildVertexBuffer();
 	BuildIndexBuffer();
+	BuildConstantBuffer();
 	BuildShader();
 	BuildInputLayout();
 }
@@ -122,6 +126,7 @@ void Cube::RenderUpdate()
 {
 	BuildVertexBuffer();
 	BuildIndexBuffer();
+	BuildConstantBuffer();
 	BuildShader();
 	BuildInputLayout();
 }
@@ -146,12 +151,12 @@ HRESULT Cube::BuildVertexBuffer()
 {
 	D3D11_BUFFER_DESC vbDesc
 	{
-		vertices.size() * sizeof(Cube::Vertex),
+		vertices.size() * sizeof(Vertex),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_VERTEX_BUFFER,
 		NULL,
 		NULL,
-		sizeof(Cube::Vertex)
+		sizeof(Vertex)
 	};
 
 	D3D11_SUBRESOURCE_DATA vbData
@@ -192,6 +197,30 @@ HRESULT Cube::BuildIndexBuffer()
 	result = device->CreateBuffer(&ibDesc, &ibData, indexBuffer.put());
 
 	IBs.emplace_back(indexBuffer.get());
+
+	return result;
+}
+
+HRESULT Cube::BuildConstantBuffer()
+{
+	D3D11_BUFFER_DESC cbDesc
+	{
+		sizeof(worldMatrix),
+		D3D11_USAGE_DEFAULT,
+		D3D11_BIND_CONSTANT_BUFFER,
+		NULL,
+		NULL,
+		sizeof(XMMATRIX)
+	};
+
+	D3D11_SUBRESOURCE_DATA cbData
+	{
+		&worldMatrix,
+		0,
+		0
+	};
+
+	result = device->CreateBuffer(&cbDesc, &cbData, constantBuffer.put());
 
 	return result;
 }
@@ -251,11 +280,14 @@ void Cube::Bind()
 	deviceContext->IASetInputLayout(inputLayout.get());
 
 	// binding Buffers to pipeline IA Stage
-	UINT strides = sizeof(Cube::Vertex);
+	UINT strides = sizeof(Vertex);
 	UINT offsets = 0;
 	deviceContext->IASetVertexBuffers(0, VBs.size(), VBs.data(), &strides, &offsets);
 	deviceContext->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
 
+	ID3D11Buffer* CBs[1] = { constantBuffer.get() };
+
+	deviceContext->VSSetConstantBuffers(0, 1, CBs);
 	deviceContext->VSSetShader(vertexShader.get(), NULL, NULL);
 	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
 }

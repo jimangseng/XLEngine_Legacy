@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Windows.h>
+#include <windowsx.h>
 #include "Renderer.h"
 #include "RenderScene.h"
 #include "Resources.h"
