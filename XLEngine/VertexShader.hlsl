@@ -1,6 +1,6 @@
 cbuffer VS_constantBuffer : register(b0)
 {
-	matrix world;
+	matrix WVP;
 }
 
 struct VS_in
@@ -18,7 +18,7 @@ struct VS_out
 VS_out VS (VS_in _in)
 {
 	VS_out _out;
-	_out.position = mul(float4(_in.positionL, 1.0f), world);
+	_out.position = mul(WVP, float4(_in.positionL, 1.0f) );
 	_out.color = _in.color;
 	
 	return _out;

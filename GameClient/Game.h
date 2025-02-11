@@ -5,6 +5,11 @@
 #include "../XLEngine/Cube.h"
 class Game
 {
+public:
+	Game() = default;
+	~Game() = default;
+	Game(const Game& rhs) = delete;
+	Game& operator= (const Game& rhs) = delete;
 
 public:
 	void Start();

@@ -12,39 +12,44 @@ class Cube;
 
 namespace XL
 {
-	namespace D3D11
+	namespace Graphics
 	{
-		class Renderer
+		namespace D3D11
 		{
-		public:
-			Renderer() = default;
-			~Renderer() = default;
+			class Renderer
+			{
+			public:
+				Renderer()
+					:resources(Resources::GetInstance())
+				{
 
-			Renderer(const Renderer& rhs) = delete;
-			Renderer& operator= (const Renderer& rhs) = delete;
+				}
+				~Renderer() = default;
+				Renderer(const Renderer& rhs) = delete;
+				Renderer& operator= (const Renderer& rhs) = delete;
 
-		public:
-			void Initialize();
-			void Update();
-			void Finalize();
+			public:
+				void Initialize();
+				void Update();
+				void Finalize();
 
-		private:
-			void BindResources();
+			private:
+				void BindResources();
 
-		private:
-			void BindView();
-			void UnbindView();
+			private:
+				void BindView();
+				void UnbindView();
 
-		public:
-			void SetCurrentScene(XL::Graphics::RenderScene* _scene);
+			public:
+				void SetCurrentScene(RenderScene* _scene);
 
-		private:
-			Resources& resources = Resources::GetInstance();
-
-			// "XLD3DResource" 에서 com_ptr로 관리하며, 생 포인터를 받아와 사용한다
-			ID3D11DeviceContext* deviceContext;
-
-			XL::Graphics::RenderScene* currentScene;
-		};
+			private:
+				RenderScene* currentScene;
+				Resources& resources;
+				ID3D11DeviceContext* deviceContext;			// Resources 클래스에서 com_ptr로 관리하며, 생 포인터를 받아와 사용한다
+				DXGI_PRESENT_PARAMETERS presentParams;
+				const float backgroundColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
+			};
+		}
 	}
 }

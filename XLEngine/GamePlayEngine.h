@@ -7,6 +7,12 @@ namespace XL
 	class GamePlayEngine
 	{
 	public:
+		GamePlayEngine() = default;
+		~GamePlayEngine() = default;
+		GamePlayEngine(const GamePlayEngine& rhs) = delete;
+		GamePlayEngine& operator= (const GamePlayEngine& rhs) = delete;
+
+	public:
 		void Initialize();
 		void Update();
 		void Finalize();

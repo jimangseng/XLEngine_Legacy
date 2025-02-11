@@ -1,10 +1,13 @@
 #pragma once
 
-#include "../XLMath/XLMath.h"
+#include "XLMath.h"
 
 using namespace DirectX;
 
-// todo:
+// todo: namespace 도입
+// 여긴 할 것은 별로 없다
+// 순수 가상함수를 써야하는지 고민해볼 것
+// 모든 오브젝트에 공통적으로 들어갈 로직이라면 오히려 쓰지 않고 정의해버리는 것이 좋다?
 class IObject
 {
 public:

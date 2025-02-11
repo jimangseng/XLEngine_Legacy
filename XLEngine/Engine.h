@@ -14,8 +14,8 @@ namespace XL
 	{
 	public:
 		XLEngine(HWND _hWnd)
-			: gamePlayEngine(std::make_unique<GamePlayEngine>()),
-			graphicsEngine(std::make_unique<GraphicsEngine>(_hWnd))
+			: gamePlayEngine(GamePlayEngine()),
+			graphicsEngine(GraphicsEngine(_hWnd))
 		{
 		}
 
@@ -28,7 +28,7 @@ namespace XL
 		void SyncScene(GamePlay::GameScene* gameScene);
 
 	private:
-		std::unique_ptr<GamePlayEngine> gamePlayEngine;
-		std::unique_ptr<GraphicsEngine> graphicsEngine;
+		GamePlayEngine gamePlayEngine;
+		GraphicsEngine graphicsEngine;
 	};
 }

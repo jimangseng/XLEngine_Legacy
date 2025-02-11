@@ -3,8 +3,6 @@
 #include <vector>
 #include <memory>
 #include "IRenderable.h"
-#include "IObject.h"
-#include "GameScene.h"
 
 namespace XL
 {

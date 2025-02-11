@@ -1,4 +1,4 @@
-#include "../XLMath/XLMath.h"
+#include "XLMath.h"
 #include "Cube.h"
 #include "DirectXMath.h"
 
@@ -6,7 +6,9 @@ using namespace XL::Math;
 
 void Cube::SetPosition(float x, float y, float z)
 {
-	wPosition = Vector3(x, y, z);
+	//wPosition = Vector3(x, y, z);
+	
+	translation = XMMatrixTranslation(x, y, z);
 }
 
 void Cube::Translate(float x, float y, float z)
@@ -15,7 +17,9 @@ void Cube::Translate(float x, float y, float z)
 	//wPosition = wPosition + vector;
 
 	//Matrix translation(vector);
-	translation = XMMatrixTranslation(x, y, z);
+	
+	translation = XMMatrixMultiply(translation, XMMatrixTranslation(x, y, z));
+	//translation = XMMatrixTranslation(x, y, z);
 }
 
 void Cube::Rotate(float x, float y, float z)
@@ -28,7 +32,7 @@ void Cube::Scale(float x, float y, float z)
 	scale = XMMatrixScaling(x, y, z);
 }
 
-// todo: 직접 구현
+// todo: 수학 라이브러리에 직접 구현해보기?
 //void Cube::Yaw(float _angle)
 //{
 //	// 각도를 라디안으로 변환
@@ -74,7 +78,11 @@ void Cube::Scale(float x, float y, float z)
 /////// Game Scene
 void Cube::Start()
 {
-	worldMatrix = XMMatrixMultiply(XMMatrixMultiply(scale, rotation), translation);
+	worldMatrix = XMMatrixMultiply(scale, XMMatrixMultiply(rotation, translation));
+	viewMatrix = XMMatrixIdentity();
+
+
+	WVPMatrix = XMMatrixMultiply(worldMatrix, viewMatrix);
 
 	for (auto& vertex : vertices)
 	{
@@ -90,7 +98,11 @@ void Cube::Start()
 
 void Cube::Update()
 {
-	worldMatrix = XMMatrixMultiply(XMMatrixMultiply(scale, rotation), translation);
+	worldMatrix = XMMatrixMultiply(scale, XMMatrixMultiply(rotation, translation));
+	viewMatrix = XMMatrixIdentity();
+	projectionMatrix = XMMatrixPerspectiveFovLH(20.0f, static_cast<float>(resources.ScreenWidth / resources.ScreenHeight), 0.0001f, 100.0f);
+
+	WVPMatrix = XMMatrixMultiply(worldMatrix, XMMatrixMultiply(viewMatrix, projectionMatrix));
 
 	for (auto& vertex : vertices)
 	{
@@ -151,7 +163,7 @@ HRESULT Cube::BuildVertexBuffer()
 {
 	D3D11_BUFFER_DESC vbDesc
 	{
-		vertices.size() * sizeof(Vertex),
+		(UINT)vertices.size() * sizeof(Vertex),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_VERTEX_BUFFER,
 		NULL,
@@ -205,7 +217,7 @@ HRESULT Cube::BuildConstantBuffer()
 {
 	D3D11_BUFFER_DESC cbDesc
 	{
-		sizeof(worldMatrix),
+		sizeof(WVPMatrix),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_CONSTANT_BUFFER,
 		NULL,
@@ -215,7 +227,7 @@ HRESULT Cube::BuildConstantBuffer()
 
 	D3D11_SUBRESOURCE_DATA cbData
 	{
-		&worldMatrix,
+		&WVPMatrix,
 		0,
 		0
 	};
@@ -282,7 +294,7 @@ void Cube::Bind()
 	// binding Buffers to pipeline IA Stage
 	UINT strides = sizeof(Vertex);
 	UINT offsets = 0;
-	deviceContext->IASetVertexBuffers(0, VBs.size(), VBs.data(), &strides, &offsets);
+	deviceContext->IASetVertexBuffers(0, (UINT)VBs.size(), VBs.data(), &strides, &offsets);
 	deviceContext->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
 
 	ID3D11Buffer* CBs[1] = { constantBuffer.get() };

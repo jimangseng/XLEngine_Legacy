@@ -47,9 +47,6 @@
     <ClInclude Include="GamePlayEngine.h">
       <Filter>0_Engine\01_GamePlayEngine</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsEngine.h">
-      <Filter>0_Engine\02_GraphicsEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClInclude>
@@ -65,8 +62,9 @@
     <ClInclude Include="IRenderable.h">
       <Filter>1_GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="XLEngine.h">
-      <Filter>10_etc</Filter>
+    <ClInclude Include="XLEngine.h" />
+    <ClInclude Include="GraphicsEngine.h">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -82,9 +80,6 @@
     <ClCompile Include="GamePlayEngine.cpp">
       <Filter>0_Engine\01_GamePlayEngine</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsEngine.cpp">
-      <Filter>0_Engine\02_GraphicsEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClCompile>
@@ -99,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="IRenderable.cpp">
       <Filter>1_GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine.cpp">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

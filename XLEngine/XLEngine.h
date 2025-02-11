@@ -1,11 +1,11 @@
 #pragma once
 
-#include "GamePlayEngine.h"
-#include "GraphicsEngine.h"
+#include "../XLEngine/GamePlayEngine.h"
+#include "../XLEngine/GraphicsEngine.h"
 
-#include "GameScene.h"
-#include "Cube.h"
+#include "../XLEngine/GameScene.h"
+#include "../XLEngine/Cube.h"
 
-#include "../XLMath/XLMath.h"
+#include "XLMath.h"
 
 #undef GetObject

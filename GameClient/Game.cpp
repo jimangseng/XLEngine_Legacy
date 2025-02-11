@@ -1,7 +1,8 @@
 #include "Game.h"
-#include "../XLEngine/XLEngine.h"
+#include "XLEngine.h"
 
 using namespace XL::GamePlay;
+using namespace XL::Math;
 
 void Game::Start()
 {
@@ -9,13 +10,15 @@ void Game::Start()
 
 	Cube cube1;
 	cube1.size = 0.8f;
-	cube1.color = XL::Math::Vector4(0.1f, 0.3f, 0.6f, 1.0f);	// ÇÏ´Ã
+	cube1.color = Vector4(0.1f, 0.3f, 0.6f, 1.0f);	// ÇÏ´Ã
+	cube1.Translate(0.0f, 0.0f, 4.0f);
 	scene.AddObject(cube1);
 
-	//Cube cube2;
-	//cube2.size = 0.4f;
-	//cube2.color = XL::Math::Vector4(0.6f, 0.1f, 0.1f, 1.0f);	// »¡°­
-	//scene.AddObject(cube2);
+	Cube cube2;
+	cube2.size = 0.4f;
+	cube2.color = Vector4(0.6f, 0.1f, 0.1f, 1.0f);	// »¡°­
+	cube2.Translate(0.0f, 0.0f, 10.0f);
+	scene.AddObject(cube2);
 
 	//Cube cube3;
 	//cube3.size = 0.3f;
@@ -37,13 +40,16 @@ void Game::Update()
 	// todo: Timer
 	time += 0.02f;
 
+	float t = cos(time);
+
 	// todo: scene ¾ÈÀ¸·Î Á¢±ÙÇÏÁö ¾Êµµ·Ï ¼öÁ¤
-	//scene.GetObject(0)->SetPosition(0.0f, sin(time), 0.0f);
+	//scene.GetObject(0)->Translate(0.0f, 0.0f, 10.0f);
+	scene.GetObject(0)->Translate(0.05f * t, 0.0f, 0.0f);
 	//scene.GetObject(1)->SetPosition(sin(time), 0.0f, 0.0f);
 	//scene.GetObject(2)->SetPosition(cos(time), sin(time), 0.0f);
 	
-	scene.GetObject(0)->Rotate(time, time, 0.0f);
-	//scene.GetObject(1)->Rotate(time, time, time);
+	scene.GetObject(0)->Rotate(time, time, time);
+	scene.GetObject(1)->Rotate(time, time, -time);
 	//scene.GetObject(2)->Rotate(time, 0.0f, time);
 	//scene.GetObject(3)->Rotate(0.0f, time, time);
 }

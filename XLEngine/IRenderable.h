@@ -2,6 +2,8 @@
 
 #include "Common.h"
 
+// todo: namespace 도입
+
 class IRenderable
 {
 
@@ -16,6 +18,8 @@ protected:
 	virtual void Unbind() = 0;
 
 protected:
+	// todo: 리소스와 빌드 로직이 혼재되어있는 것을 해소
+	// 하지만, 게임오브젝트 종속적인데 어떻게 해결해야하나
 	virtual void GetD3DResources() = 0;
 	virtual HRESULT BuildVertexBuffer() = 0;
 	virtual HRESULT BuildIndexBuffer() = 0;
@@ -27,7 +31,6 @@ private:
 	int IBSize = 0;
 
 protected:
-
 	ID3D11Device* device;
 	ID3D11DeviceContext* deviceContext;
 

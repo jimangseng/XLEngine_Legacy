@@ -8,6 +8,11 @@
 class GameProcess
 {
 public:
+	GameProcess() = delete;
+	~GameProcess() = default;
+	GameProcess(const GameProcess& rhs) = delete;
+	GameProcess& operator= (const GameProcess& rhs) = delete;
+
 	GameProcess(HWND _hWnd);
 
 public:
@@ -16,6 +21,6 @@ public:
 	void Finish();
 
 private:
-	std::unique_ptr<XL::XLEngine> engine;
+	XL::XLEngine engine;
 	std::unique_ptr<Game> game;
 };

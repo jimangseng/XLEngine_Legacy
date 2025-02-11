@@ -1,12 +1,10 @@
 #pragma once
+#undef GetObject
 
 #include <vector>
 #include <memory>
 #include "IObject.h"
 
-#undef GetObject
-
-class Cube;
 
 namespace XL
 {

@@ -4,93 +4,74 @@
 
 namespace XL
 {
-	namespace D3D11
+	namespace Graphics
 	{
-		class Resources
+		namespace D3D11
 		{
-		public:
-			Resources() = default;
-			~Resources() = default;
-			Resources(const Resources& ref) = delete;
-			Resources& operator= (const Resources& ref) = delete;
-
-		public:
-			// 싱글톤 객체 반환
-			static Resources& GetInstance()
+			class Resources
 			{
-				static Resources instance;
+			public:
+				Resources(const Resources& ref) = delete;
+				Resources& operator= (const Resources& ref) = delete;
 
-				return instance;
-			}
+			private:
+				// 클래스 내부에서만 기본 생성자를 호출하고, 외부에서는 호출하지 못하도록 막음
+				Resources() {}
+				~Resources() {}
 
-			//static ID3D11Device* const GetDevice()
-			//{
-			//	return device.get();
-			//}
+			public:
+				// 싱글톤 객체 반환
+				static Resources& GetInstance()
+				{
+					static Resources instance;
 
-			//static ID3D11DeviceContext* const GetDeviceContext()
-			//{
-			//	return deviceContext.get();
-			//}
+					return instance;
+				}
 
-			//static ID3D11Device** PutDevice()
-			//{
-			//	return device.put();
-			//}
+			public:
+				void Build();
 
-			//static ID3D11DeviceContext** PutDeviceContext()
-			//{
-			//	return deviceContext.put();
-			//}
+			private:
+				void BuildDeviceAndSwapChain();
+				void SetRasterizerState();
+				void BuildRenderTargetView();
+				void BuildDepthStencilView();
+				void SetDepthStencilState();
+				void SetBlendState();
 
-		public:
-			void Build();
+			public:
+				// D3D 자원들
+				com_ptr<ID3D11Device> device;
+				com_ptr<ID3D11DeviceContext> deviceContext;
 
-		private:
-			void BuildDeviceAndSwapChain();
-			void SetRasterizerState();
-			void BuildRenderTargetView();
-			void BuildDepthStencilView();
-			void SetDepthStencilState();
-			void SetBlendState();
+				com_ptr<IDXGIFactory2> factory;
+				com_ptr<IDXGIAdapter1> adapter;
+				com_ptr<IDXGISwapChain1> swapChain;
 
-		// 자원들
-		public:
-			com_ptr<ID3D11Device> device;
-			com_ptr<ID3D11DeviceContext> deviceContext;
+				com_ptr<ID3D11Texture2D> renderTarget;
+				com_ptr<ID3D11RenderTargetView> renderTargetView;
+				std::vector<ID3D11RenderTargetView*> RenderTargetViews;
 
-			com_ptr<IDXGIFactory2> factory;
-			com_ptr<IDXGIAdapter1> adapter;
+				com_ptr<ID3D11Texture2D> depthStencilBuffer;
+				com_ptr<ID3D11DepthStencilView> depthStencilView;
 
-			com_ptr<IDXGISwapChain1> swapChain;
+				com_ptr<ID3D11DepthStencilState> depthStencilState;
 
-			com_ptr<ID3D11Texture2D> renderTarget;
-			com_ptr<ID3D11RenderTargetView> renderTargetView;
-			std::vector<ID3D11RenderTargetView*> RTVs;	// render target views
+				com_ptr<ID3D11ShaderResourceView> shaderResourceView;
 
-			com_ptr<ID3D11Texture2D> depthStencilBuffer;
-			com_ptr<ID3D11DepthStencilView> depthStencilView;
+				com_ptr<ID3D11RasterizerState> rasterizerState;
 
-			com_ptr<ID3D11DepthStencilState> depthStencilState;
+				com_ptr<ID3D11BlendState> blendState;
 
-			DXGI_PRESENT_PARAMETERS presentParams;	// swap chain present parameters
+				// misc
+				int ScreenWidth;
+				int ScreenHeight;
+				HWND hWnd;	// window handle
 
-			com_ptr<ID3D11ShaderResourceView> shaderResourceView;
+			private:
+				HRESULT result;
+			};
+		}
 
-			com_ptr<ID3D11RasterizerState> rasterizerState;
-
-			com_ptr<ID3D11BlendState> blendState;
-
-			// misc
-			int ScreenWidth;
-			int ScreenHeight;
-
-			HWND hWnd;	// window handle
-
-		private:
-
-			HRESULT result;
-			//const float backgroundColor[4];
-		};
 	}
 }
