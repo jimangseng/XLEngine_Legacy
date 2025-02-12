@@ -1,132 +1,74 @@
-#include "XLMath.h"
 #include "Cube.h"
+#include "XLMath.h"
 #include "DirectXMath.h"
 
 using namespace XL::Math;
 
-void Cube::SetPosition(float x, float y, float z)
+XL::GameObjects::Cube::Cube()
+	: Cube(0.1f, { 1.0f, 1.0f, 1.0f, 1.0f })
 {
-	//wPosition = Vector3(x, y, z);
-	
-	translation = XMMatrixTranslation(x, y, z);
 }
 
-void Cube::Translate(float x, float y, float z)
+XL::GameObjects::Cube::Cube(XL::Math::Vector4 _color)
+	: Cube(0.1f, _color)
 {
-	//Vector3 vector = Vector3(x, y, z);
-	//wPosition = wPosition + vector;
-
-	//Matrix translation(vector);
-	
-	translation = XMMatrixMultiply(translation, XMMatrixTranslation(x, y, z));
-	//translation = XMMatrixTranslation(x, y, z);
 }
 
-void Cube::Rotate(float x, float y, float z)
+XL::GameObjects::Cube::Cube(float _size, XL::Math::Vector4 _color)
+	: size(_size), color(_color)
 {
-	rotation = XMMatrixRotationRollPitchYaw(x, y, z);	
+	vertices.emplace_back(Vertex{ {-1.0, 1.0, 0.0f}, {}, {} });
+	vertices.emplace_back(Vertex{ {1.0, 1.0, 0.0f}, {}, {} });
+	vertices.emplace_back(Vertex{ {-1.0, -1.0, 0.0f}, {}, {} });
+	vertices.emplace_back(Vertex{ {1.0, -1.0, 0.0f}, {}, {} });
+	vertices.emplace_back(Vertex{ {-1.0, 1.0, 1.0f}, {}, {} });
+	vertices.emplace_back(Vertex{ {1.0, 1.0, 1.0f}, {}, {} });
+	vertices.emplace_back(Vertex{ {-1.0, -1.0, 1.0f}, {}, {} });
+	vertices.emplace_back(Vertex{ {1.0, -1.0, 1.0f}, {}, {} });
+
 }
 
-void Cube::Scale(float x, float y, float z)
+void XL::GameObjects::Cube::UpdateMatrices()
 {
-	scale = XMMatrixScaling(x, y, z);
-}
+	float aspectRatio = static_cast<float>(resources.ScreenWidth / resources.ScreenHeight);
 
-// todo: 수학 라이브러리에 직접 구현해보기?
-//void Cube::Yaw(float _angle)
-//{
-//	// 각도를 라디안으로 변환
-//	float radian = _angle * 3.14159265358979323846f / 180.0f;
-//
-//	float cosTheta = cos(radian);
-//	float sinTheta = sin(radian);
-//
-//	// 모든 버텍스에 회전 적용
-//	for (auto& vertex : vertices)
-//	{
-//
-//		float x = vertex.localPosition.x;
-//		float z = vertex.localPosition.x;
-//
-//		float newX = x * cosTheta + z * sinTheta;
-//		float newZ = -x * sinTheta + z * cosTheta;
-//
-//		vertex.localPosition.x = newX;
-//		vertex.localPosition.z = newZ;
-//
-//
-//	}
-//}
-//
-//void Cube::Pitch(float _angle)
-//{
-//
-//}
-//
-//void Cube::Roll(float _angle)
-//{
-//
-//}
-//
-//void Cube::Scale(XMFLOAT3 _value)
-//{
-//
-//}
+	worldMatrix = XMMatrixMultiply(scale, XMMatrixMultiply(rotation, translation));
+	viewMatrix = XMMatrixIdentity();
+	projectionMatrix = XMMatrixPerspectiveFovLH(20.0f, aspectRatio, 0.0001f, 100.0f);
+
+	WVPMatrix = XMMatrixMultiply(worldMatrix, XMMatrixMultiply(viewMatrix, projectionMatrix));
+}
 
 //////
 //////
 /////// Game Scene
-void Cube::Start()
+void XL::GameObjects::Cube::InitializeGameObject()
 {
-	worldMatrix = XMMatrixMultiply(scale, XMMatrixMultiply(rotation, translation));
-	viewMatrix = XMMatrixIdentity();
-
-
-	WVPMatrix = XMMatrixMultiply(worldMatrix, viewMatrix);
-
 	for (auto& vertex : vertices)
 	{
-
-		vertex.localPosition*= size;
-
-		vertex.worldPosition = vertex.localPosition + wPosition;
-
+		vertex.localPosition *= size;
 		vertex.color = color;
 	}
 
+	UpdateMatrices();
 }
 
-void Cube::Update()
+void XL::GameObjects::Cube::UpdateGameObject()
 {
-	worldMatrix = XMMatrixMultiply(scale, XMMatrixMultiply(rotation, translation));
-	viewMatrix = XMMatrixIdentity();
-	projectionMatrix = XMMatrixPerspectiveFovLH(20.0f, static_cast<float>(resources.ScreenWidth / resources.ScreenHeight), 0.0001f, 100.0f);
-
-	WVPMatrix = XMMatrixMultiply(worldMatrix, XMMatrixMultiply(viewMatrix, projectionMatrix));
-
-	for (auto& vertex : vertices)
-	{
-		vertex.worldPosition = vertex.localPosition + wPosition;
-	}
+	UpdateMatrices();
 }
 
-void Cube::Finish()
+void XL::GameObjects::Cube::FinalizeGameObject()
 {
-
 }
-
 
 ///////////////////////////
 //////////////////////////
 /////////////RenderScene
 
-void Cube::Initialize()
+void XL::GameObjects::Cube::InitializeRendeable()
 {
 	GetD3DResources();
-}
-
-void Cube::Build()
-{
 	BuildVertexBuffer();
 	BuildIndexBuffer();
 	BuildConstantBuffer();
@@ -134,16 +76,12 @@ void Cube::Build()
 	BuildInputLayout();
 }
 
-void Cube::RenderUpdate()
+void XL::GameObjects::Cube::UpdateRenderable()
 {
-	BuildVertexBuffer();
-	BuildIndexBuffer();
-	BuildConstantBuffer();
-	BuildShader();
-	BuildInputLayout();
+	deviceContext->UpdateSubresource(constantBuffer.get(), 0, NULL, &WVPMatrix, 0, 0);
 }
 
-void Cube::Draw()
+void XL::GameObjects::Cube::DrawRenderable()
 {
 	Bind();
 
@@ -152,14 +90,17 @@ void Cube::Draw()
 	Unbind();
 }
 
+void XL::GameObjects::Cube::FinalizeRenderable()
+{
+}
 
-void Cube::GetD3DResources()
+void XL::GameObjects::Cube::GetD3DResources()
 {
 	device = resources.device.get();
 	deviceContext = resources.deviceContext.get();
 }
 
-HRESULT Cube::BuildVertexBuffer()
+HRESULT XL::GameObjects::Cube::BuildVertexBuffer()
 {
 	D3D11_BUFFER_DESC vbDesc
 	{
@@ -186,7 +127,7 @@ HRESULT Cube::BuildVertexBuffer()
 	return result;
 }
 
-HRESULT Cube::BuildIndexBuffer()
+HRESULT XL::GameObjects::Cube::BuildIndexBuffer()
 {
 
 	D3D11_BUFFER_DESC ibDesc
@@ -213,9 +154,9 @@ HRESULT Cube::BuildIndexBuffer()
 	return result;
 }
 
-HRESULT Cube::BuildConstantBuffer()
+HRESULT XL::GameObjects::Cube::BuildConstantBuffer()
 {
-	D3D11_BUFFER_DESC cbDesc
+	D3D11_BUFFER_DESC cbDesc =
 	{
 		sizeof(WVPMatrix),
 		D3D11_USAGE_DEFAULT,
@@ -225,7 +166,7 @@ HRESULT Cube::BuildConstantBuffer()
 		sizeof(XMMATRIX)
 	};
 
-	D3D11_SUBRESOURCE_DATA cbData
+	D3D11_SUBRESOURCE_DATA cbData =
 	{
 		&WVPMatrix,
 		0,
@@ -237,7 +178,7 @@ HRESULT Cube::BuildConstantBuffer()
 	return result;
 }
 
-HRESULT Cube::BuildInputLayout()
+HRESULT XL::GameObjects::Cube::BuildInputLayout()
 {
 	// Create Input Layout
 	D3D11_INPUT_ELEMENT_DESC intputElementDesc[] =
@@ -259,7 +200,7 @@ HRESULT Cube::BuildInputLayout()
 	return result;
 }
 
-void Cube::BuildShader()
+void XL::GameObjects::Cube::BuildShader()
 {
 	// Loading Shader ByteCode
 	result = D3DReadFileToBlob(TEXT("../Shader/VertexShader.cso"), vertexShaderByteCode.put());
@@ -284,10 +225,8 @@ void Cube::BuildShader()
 
 }
 
-void Cube::Bind()
+void XL::GameObjects::Cube::Bind()
 {
-	BuildVertexBuffer();
-
 	// binding InputLayout to pipline IA Stage 
 	deviceContext->IASetInputLayout(inputLayout.get());
 
@@ -304,13 +243,7 @@ void Cube::Bind()
 	deviceContext->PSSetShader(pixelShader.get(), NULL, NULL);
 }
 
-void Cube::Unbind()
+void XL::GameObjects::Cube::Unbind()
 {
-	//wVertices.clear();
-
-	//for (auto& vertex : lVertices)
-	//{
-	//	wVertices.emplace_back(vertex);
-	//}
 
 }

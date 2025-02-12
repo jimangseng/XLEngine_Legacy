@@ -1,21 +1,21 @@
 #include "GamePlayEngine.h"
 
 #include <memory>
-#include "IObject.h"
+#include "GameObject.h"
 #include "Cube.h"
 #include "GameScene.h"
 
-void XL::GamePlayEngine::Initialize()
+void XL::GamePlay::GamePlayEngine::Initialize()
 {
-	scene->Start();
+	gameScene->Start();
 }
 
-void XL::GamePlayEngine::Update()
+void XL::GamePlay::GamePlayEngine::Update()
 {
-	scene->Update();
+	gameScene->Update();
 }
 
-void XL::GamePlayEngine::Finalize()
+void XL::GamePlay::GamePlayEngine::Finalize()
 {
-	scene->Finish();
+	gameScene->Finish();
 }

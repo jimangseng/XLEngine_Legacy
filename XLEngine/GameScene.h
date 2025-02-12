@@ -3,11 +3,12 @@
 
 #include <vector>
 #include <memory>
-#include "IObject.h"
-
+#include "GameObject.h"
 
 namespace XL
 {
+	using namespace GameObjects;
+
 	namespace GamePlay
 	{
 		class GameScene
@@ -18,14 +19,14 @@ namespace XL
 			template <typename T>
 			void AddObject(T& object)
 			{
-				objects.emplace_back(std::make_shared<T>(std::move(object)));
+				objects.emplace_back(std::make_shared<T>(std::move(object)));	// 업캐스트 발생		// RenderScene의 ConvertScene()에서 다운캐스팅이 발생
 			}
 
-			template <typename T>
-			void AddObject(T&& object)
-			{
-				objects.emplace_back(std::make_shared<T>(std::move(object)));
-			}
+			//template <typename T>
+			//void AddObject(T&& object)
+			//{
+			//	objects.emplace_back(std::make_shared<T>(std::move(object)));	// 업캐스트 발생
+			//}
 
 		public:
 			void Start();
@@ -33,11 +34,11 @@ namespace XL
 			void Finish();
 
 		public:
-			IObject* GetObject(unsigned int i) { return objects.at(i).get(); }
-			std::vector<std::shared_ptr<IObject>>& GetObjects() { return objects; }
+			GameObject* GetObject(unsigned int i) { return objects.at(i).get(); }
+			std::vector<std::shared_ptr<GameObject>>& GetObjects() { return objects; }
 
 		private:
-			std::vector<std::shared_ptr<IObject>> objects;
+			std::vector<std::shared_ptr<GameObject>> objects;
 		};
 	}
 }

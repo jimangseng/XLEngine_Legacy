@@ -4,13 +4,13 @@
     <Filter Include="0_Game">
       <UniqueIdentifier>{0cc5f6b7-a6c8-40e7-b4f0-b61b7e0fe6d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="10_etc">
+    <Filter Include="1_etc">
       <UniqueIdentifier>{bc108aff-c0b6-4699-bd82-faf24a792183}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>10_etc</Filter>
+      <Filter>1_etc</Filter>
     </ClInclude>
     <ClInclude Include="GameProcess.h">
       <Filter>0_Game</Filter>
@@ -24,15 +24,10 @@
       <Filter>0_Game</Filter>
     </ClCompile>
     <ClCompile Include="EntryPoint.cpp">
-      <Filter>10_etc</Filter>
+      <Filter>1_etc</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>0_Game</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <Filter>10_etc</Filter>
-    </None>
   </ItemGroup>
 </Project>

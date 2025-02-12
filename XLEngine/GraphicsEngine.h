@@ -8,33 +8,39 @@
 
 namespace XL
 {
-	class GraphicsEngine
+	namespace Graphics
 	{
-	public:
-		GraphicsEngine() = default;
-		~GraphicsEngine() = default;
-		GraphicsEngine(const GraphicsEngine& rhs) = delete;
-		GraphicsEngine& operator= (const GraphicsEngine& rhs) = delete;
-
-		GraphicsEngine(HWND _hWnd)
-			: resources(XL::Graphics::D3D11::Resources::GetInstance())
+		class GraphicsEngine
 		{
-			resources.hWnd = _hWnd;
-			renderer = make_unique<XL::Graphics::D3D11::Renderer>();
-			scene = std::make_unique<XL::Graphics::RenderScene>();
-		}
+		public:
+			GraphicsEngine() = default;
+			~GraphicsEngine() = default;
+			GraphicsEngine(const GraphicsEngine& rhs) = delete;
+			GraphicsEngine& operator= (const GraphicsEngine& rhs) = delete;
 
-		void Initialize();
-		void Update();
-		void Finalize();
+			GraphicsEngine(HWND _hWnd)
+				: resources(XL::Graphics::D3D11::Resources::GetInstance())
+			{
+				// Todo: ResourceManager 발전시키기
+				resources.hWnd = _hWnd;
+				resources.Build();
 
-	public:
-		void SyncScene(XL::GamePlay::GameScene* gameScene);
+				renderer = make_unique<XL::Graphics::D3D11::Renderer>();
+				renderScene = std::make_unique<XL::Graphics::RenderScene>();
+			}
 
-	private:
-		XL::Graphics::D3D11::Resources& resources;
-		unique_ptr<XL::Graphics::D3D11::Renderer> renderer;
-		std::unique_ptr< XL::Graphics::RenderScene> scene;
-	};
+			void Initialize(GamePlay::GameScene* _gameScene);
+			void Update(GamePlay::GameScene* _gameScene);
+			void Finalize();
+
+		public:
+			Graphics::RenderScene* GetScene() { return renderScene.get(); }
+
+		private:
+			XL::Graphics::D3D11::Resources& resources;
+			unique_ptr<XL::Graphics::D3D11::Renderer> renderer;
+			unique_ptr< XL::Graphics::RenderScene> renderScene;
+		};
+	}
 }
 

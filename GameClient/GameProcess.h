@@ -22,5 +22,5 @@ public:
 
 private:
 	XL::XLEngine engine;
-	std::unique_ptr<Game> game;
+	std::unique_ptr<Game> gameInstance;
 };

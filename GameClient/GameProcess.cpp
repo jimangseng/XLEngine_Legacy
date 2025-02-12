@@ -5,20 +5,20 @@
 
 GameProcess::GameProcess(HWND _hWnd)
 	:engine(XL::XLEngine(_hWnd)),
-	game(std::make_unique<Game>())
+	gameInstance(std::make_unique<Game>())
 {
 
 }
 
 void GameProcess::Start()
 {
-	game->Start();
-	engine.Initialize(game->GetScene());
+	gameInstance->Start();
+	engine.Initialize(gameInstance->GetScene());
 }
 
 void GameProcess::Update()
 {
-	game->Update();
+	gameInstance->Update();
 	engine.Update();
 }
 

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="XL::XLEngine" Collapsed="true">
+    <Position X="1" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAQAAAAAAAAAAAAAAgAAAAAAQAACAIAA=</HashCode>
+      <FileName>Engine.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="gamePlayEngine" />
+      <Field Name="graphicsEngine" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="XL::Graphics::D3D11::Resources" Collapsed="true">
+    <Position X="7.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAACIEAgARAAFAACIIgABSBAoQAAIgBkBAAABAA=</HashCode>
+      <FileName>Resources.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::Graphics::D3D11::Renderer" Collapsed="true">
+    <Position X="4.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAAAAAygAAAAAAAQAIAAAgQgAAACgAgAAEAA=</HashCode>
+      <FileName>Renderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::GamePlay::GameScene" Collapsed="true">
+    <Position X="4.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAAACAAIAAAAAAAAAAABQAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>GameScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::Graphics::RenderScene" Collapsed="true">
+    <Position X="4.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAwAAAAAAAAAAAAAAgAAAAAAAAAAQAAA=</HashCode>
+      <FileName>RenderScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::GameObjects::Cube" Collapsed="true">
+    <Position X="5.5" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="XL::GameObjects::Cube::Vertex">
+        <TypeIdentifier>
+          <NewMemberFileName>Cube.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAwAAgACACAyAAAIBIAAAgAAAQiACBAAAsAAASAAg=</HashCode>
+      <FileName>Cube.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::Components::IRenderable" Collapsed="true">
+    <Position X="4.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQgAAHIAQCAwAAFARIAAAAAJAAgQACAAAMAAAWAgA=</HashCode>
+      <FileName>IRenderable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::GamePlay::GamePlayEngine" Collapsed="true">
+    <Position X="3" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAAAAAAAQAAAAAAAIAAAAAAgAAACICgAAAAAAA=</HashCode>
+      <FileName>GamePlayEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::Graphics::GraphicsEngine" Collapsed="true">
+    <Position X="3" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAASAAAAAAAIAAAAAAgAAAAAAgAAASoAA=</HashCode>
+      <FileName>GraphicsEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XL::GameObjects::GameObject" Collapsed="true">
+    <Position X="4.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACIAAAAAAAKAAgECEAAAAgAAAAAUAAAAAAg=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

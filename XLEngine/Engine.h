@@ -14,8 +14,8 @@ namespace XL
 	{
 	public:
 		XLEngine(HWND _hWnd)
-			: gamePlayEngine(GamePlayEngine()),
-			graphicsEngine(GraphicsEngine(_hWnd))
+			: gamePlayEngine(GamePlay::GamePlayEngine()),
+			graphicsEngine(Graphics::GraphicsEngine(_hWnd))
 		{
 		}
 
@@ -25,10 +25,9 @@ namespace XL
 		void Finalize();
 
 	private:
-		void SyncScene(GamePlay::GameScene* gameScene);
+		GamePlay::GamePlayEngine gamePlayEngine;
+		Graphics::GraphicsEngine graphicsEngine;
 
-	private:
-		GamePlayEngine gamePlayEngine;
-		GraphicsEngine graphicsEngine;
+		GamePlay::GameScene currentScene;
 	};
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "IRenderable.h"
+#include "GameScene.h"
 
 namespace XL
 {
@@ -11,14 +12,19 @@ namespace XL
 		class RenderScene
 		{
 		public:
-			void Initialize();
-			void RenderUpdate();
-			void Build();
+			void Initialize(GamePlay::GameScene* _gameScene);
+			void Update(GamePlay::GameScene* _gameScene);
 			void Draw();
 			void Finalize();
 		
+		private:
+			std::vector<std::shared_ptr<Components::IRenderable>> ConvertScene(GamePlay::GameScene* _gameScene);
+
 		public:
-			std::vector<std::shared_ptr<IRenderable>> renderObjects;
+			std::vector<std::shared_ptr<Components::IRenderable>>& GetObjects() { return renderObjects; }
+		
+		private:
+			std::vector<std::shared_ptr<Components::IRenderable>> renderObjects;
 		};
 	}
 }

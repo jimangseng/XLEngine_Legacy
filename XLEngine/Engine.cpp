@@ -8,18 +8,15 @@
 void XL::XLEngine::Initialize(GamePlay::GameScene* _gameScene)
 {
 	gamePlayEngine.SetScene(_gameScene);
-
 	gamePlayEngine.Initialize();
-	graphicsEngine.Initialize();
 
-	graphicsEngine.SyncScene(gamePlayEngine.GetScene());
+	graphicsEngine.Initialize(gamePlayEngine.GetScene());
 }
 
 void XL::XLEngine::Update()
 {
 	gamePlayEngine.Update();
-	graphicsEngine.SyncScene(gamePlayEngine.GetScene());
-	graphicsEngine.Update();
+	graphicsEngine.Update(gamePlayEngine.GetScene());
 }
 
 void XL::XLEngine::Finalize()

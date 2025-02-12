@@ -8,8 +8,6 @@
 using namespace DirectX;
 using namespace winrt;
 
-class Cube;
-
 namespace XL
 {
 	namespace Graphics

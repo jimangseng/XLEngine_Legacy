@@ -1,8 +1,6 @@
 #pragma once
 
-#include <vector>
 #include "../XLEngine/GameScene.h"
-#include "../XLEngine/Cube.h"
 class Game
 {
 public:
@@ -22,5 +20,6 @@ public:
 private:
 	XL::GamePlay::GameScene scene;
 
+	// todo: 타이머 제작
 	float time = 0.0f;
 };

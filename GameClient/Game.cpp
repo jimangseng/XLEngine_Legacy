@@ -1,8 +1,11 @@
 #include "Game.h"
+
 #include "XLEngine.h"
+#include "Cube.h"
 
 using namespace XL::GamePlay;
 using namespace XL::Math;
+using namespace XL::GameObjects;
 
 void Game::Start()
 {

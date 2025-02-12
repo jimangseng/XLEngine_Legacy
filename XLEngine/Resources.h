@@ -24,7 +24,6 @@ namespace XL
 				static Resources& GetInstance()
 				{
 					static Resources instance;
-
 					return instance;
 				}
 

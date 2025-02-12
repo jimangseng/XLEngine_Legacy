@@ -4,24 +4,27 @@
 
 namespace XL
 {
-	class GamePlayEngine
+	namespace GamePlay
 	{
-	public:
-		GamePlayEngine() = default;
-		~GamePlayEngine() = default;
-		GamePlayEngine(const GamePlayEngine& rhs) = delete;
-		GamePlayEngine& operator= (const GamePlayEngine& rhs) = delete;
+		class GamePlayEngine
+		{
+		public:
+			GamePlayEngine() = default;
+			~GamePlayEngine() = default;
+			GamePlayEngine(const GamePlayEngine& rhs) = delete;
+			GamePlayEngine& operator= (const GamePlayEngine& rhs) = delete;
 
-	public:
-		void Initialize();
-		void Update();
-		void Finalize();
+		public:
+			void Initialize();
+			void Update();
+			void Finalize();
 
-	public:
-		XL::GamePlay::GameScene* GetScene() { return scene; }
-		void SetScene(XL::GamePlay::GameScene* _scene) { scene = _scene; }
-	
-	private:
-		XL::GamePlay::GameScene* scene;
-	};
+		public:
+			XL::GamePlay::GameScene* GetScene() { return gameScene; }
+			void SetScene(XL::GamePlay::GameScene* _scene) { gameScene = _scene; }
+
+		private:
+			XL::GamePlay::GameScene* gameScene;
+		};
+	}
 }

@@ -4,12 +4,6 @@
     <Filter Include="0_Engine">
       <UniqueIdentifier>{95952954-5597-4179-86d1-3abb75a32f2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="10_etc">
-      <UniqueIdentifier>{666dc039-7203-4c0c-aca7-a43a6aa2ade6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="2_Scene">
-      <UniqueIdentifier>{c8109163-5012-4336-a283-ac8ddc1f7c14}</UniqueIdentifier>
-    </Filter>
     <Filter Include="4_HLSL">
       <UniqueIdentifier>{f79c960a-0d9c-4a39-9ad9-0da6a0ef6eb7}</UniqueIdentifier>
     </Filter>
@@ -25,11 +19,12 @@
     <Filter Include="0_Engine\02_GraphicsEngine\021_Components">
       <UniqueIdentifier>{0eabc8e5-80b7-496a-926c-7e2bef5d6406}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <Filter>10_etc</Filter>
-    </None>
+    <Filter Include="3_Scene">
+      <UniqueIdentifier>{c8109163-5012-4336-a283-ac8ddc1f7c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_Components">
+      <UniqueIdentifier>{a374acf0-31c7-4b51-b8b0-45d14abd9a60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -38,7 +33,7 @@
     <ClInclude Include="Cube.h">
       <Filter>1_GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="IObject.h">
+    <ClInclude Include="GameObject.h">
       <Filter>1_GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
@@ -54,17 +49,17 @@
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>2_Scene</Filter>
+      <Filter>3_Scene</Filter>
     </ClInclude>
     <ClInclude Include="RenderScene.h">
-      <Filter>2_Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="IRenderable.h">
-      <Filter>1_GameObjects</Filter>
+      <Filter>3_Scene</Filter>
     </ClInclude>
     <ClInclude Include="XLEngine.h" />
     <ClInclude Include="GraphicsEngine.h">
       <Filter>0_Engine\02_GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>2_Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -74,7 +69,7 @@
     <ClCompile Include="Cube.cpp">
       <Filter>1_GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="IObject.cpp">
+    <ClCompile Include="GameObject.cpp">
       <Filter>1_GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="GamePlayEngine.cpp">
@@ -87,16 +82,16 @@
       <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
-      <Filter>2_Scene</Filter>
+      <Filter>3_Scene</Filter>
     </ClCompile>
     <ClCompile Include="RenderScene.cpp">
-      <Filter>2_Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="IRenderable.cpp">
-      <Filter>1_GameObjects</Filter>
+      <Filter>3_Scene</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsEngine.cpp">
       <Filter>0_Engine\02_GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderable.cpp">
+      <Filter>2_Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,5 +101,8 @@
     <FxCompile Include="PixelShader.hlsl">
       <Filter>4_HLSL</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

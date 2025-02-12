@@ -1,10 +1,7 @@
 #pragma once
 
-#include "../XLEngine/GamePlayEngine.h"
-#include "../XLEngine/GraphicsEngine.h"
-
-#include "../XLEngine/GameScene.h"
-#include "../XLEngine/Cube.h"
+#include "GamePlayEngine.h"
+#include "GraphicsEngine.h"
 
 #include "XLMath.h"
 
