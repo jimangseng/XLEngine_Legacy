@@ -16,12 +16,10 @@ namespace XL
 	{
 		class Cube : public GameObject, public Components::IRenderable
 		{
-			// 버텍스에 들어갈 데이터 구조체
 			struct Vertex
 			{
 				XL::Math::Vector3 localPosition;
-				XL::Math::Vector3 worldPosition;
-				XL::Math::Vector4 color;
+				XMFLOAT2 UV;
 			};
 
 		public:
@@ -38,60 +36,25 @@ namespace XL
 			Cube(float _size, XL::Math::Vector4 _color);
 
 		public:
-			float size;
-			XL::Math::Vector4 color;
-			vector<Vertex> vertices;
-			const int indices[3 * 2 * 6] =
-			{
-				0, 3, 2,
-				0, 1, 3,
+			virtual void Initialize() override;
+			virtual void Update() override;
+			virtual void Finalize() override;
 
-				0, 4, 1,
-				4, 5, 1,
-
-				3, 1, 7,
-				1, 5, 7,
-
-				4, 0, 6,
-				6, 0, 2,
-
-				5, 4, 7,
-				7, 4, 6,
-
-				6, 2, 3,
-				6, 3, 7
-			};
+			virtual XL::Components::Mesh* GetMesh() override { return mesh; }
 
 		private:
 			void UpdateMatrices();
 
 		public:
-			virtual void InitializeGameObject() override;
-			virtual void UpdateGameObject() override;
-			virtual void FinalizeGameObject() override;
+			float size;
+			XL::Math::Vector4 color;
+			std::vector<Vertex> vertices;
+			std::vector<UINT> indices;
+			std::vector<D3D11_INPUT_ELEMENT_DESC> inputElementDesc;
+			const wchar_t* texturePath;
 
-			virtual void InitializeRendeable() override;
-			virtual void UpdateRenderable() override;
-			virtual void DrawRenderable() override;
-			virtual void FinalizeRenderable() override;
-
-
-			///Render 관련
-			// todo: 자원 생성, 렌더링 관련 로직이 여기 있는 것이 불합리하게 느껴지므로 수정할 것
 		private:
 			XL::Graphics::D3D11::Resources& resources = XL::Graphics::D3D11::Resources::GetInstance();
-
-		protected:
-			virtual void Bind() override;
-			virtual void Unbind() override;
-
-		protected:
-			virtual void GetD3DResources() override;
-			virtual HRESULT BuildVertexBuffer() override;
-			virtual HRESULT BuildIndexBuffer() override;
-			HRESULT BuildConstantBuffer();
-			virtual HRESULT BuildInputLayout() override;
-			virtual void BuildShader() override;
 		};
 	}
 }

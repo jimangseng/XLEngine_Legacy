@@ -1,8 +1,9 @@
 #include "Game.h"
 
-#include "XLEngine.h"
-#include "Cube.h"
-
+#include "../XLEngine/XLEngine.h"
+#include "../XLEngine/Cube.h"
+#include "../XLEngine/Timer.h"
+#include <iostream>
 using namespace XL::GamePlay;
 using namespace XL::Math;
 using namespace XL::GameObjects;
@@ -13,20 +14,13 @@ void Game::Start()
 
 	Cube cube1;
 	cube1.size = 0.8f;
-	cube1.color = Vector4(0.1f, 0.3f, 0.6f, 1.0f);	// 하늘
 	cube1.Translate(0.0f, 0.0f, 4.0f);
 	scene.AddObject(cube1);
 
 	Cube cube2;
 	cube2.size = 0.4f;
-	cube2.color = Vector4(0.6f, 0.1f, 0.1f, 1.0f);	// 빨강
 	cube2.Translate(0.0f, 0.0f, 10.0f);
 	scene.AddObject(cube2);
-
-	//Cube cube3;
-	//cube3.size = 0.3f;
-	//cube3.color = XL::Math::Vector4( 0.1f, 0.1f, 0.6f, 1.0f );	// 파랑
-	//scene.AddObject(cube3);
 
 	//Cube cube4;
 	//cube4.size = 0.1f;
@@ -36,25 +30,21 @@ void Game::Start()
 	////cube4.Rotate(0.0f, 30.0f, 0.0f);
 	//scene.AddObject(cube4);
 
+
+
 }
 
 void Game::Update()
 {
-	// todo: Timer
-	time += 0.02f;
-
-	float t = cos(time);
+	std::cout << Timer::deltaTime << std::endl;
+	std::cout << Timer::frateRate << std::endl;
+	std::cout << Timer::time << std::endl << std::endl;
 
 	// todo: scene 안으로 접근하지 않도록 수정
-	//scene.GetObject(0)->Translate(0.0f, 0.0f, 10.0f);
-	scene.GetObject(0)->Translate(0.05f * t, 0.0f, 0.0f);
-	//scene.GetObject(1)->SetPosition(sin(time), 0.0f, 0.0f);
-	//scene.GetObject(2)->SetPosition(cos(time), sin(time), 0.0f);
-	
-	scene.GetObject(0)->Rotate(time, time, time);
-	scene.GetObject(1)->Rotate(time, time, -time);
-	//scene.GetObject(2)->Rotate(time, 0.0f, time);
-	//scene.GetObject(3)->Rotate(0.0f, time, time);
+	//scene.GetObject(0)->SetPosition(0.05f * sin(Timer::time * Timer::deltaTime), 0.0f, 0.0f);
+	//scene.GetObject(0)->Translate()
+	scene.GetObject(0)->Rotate(0.0f, 0.5f * Timer::deltaTime, 0.0f);
+	scene.GetObject(1)->Rotate(1.5f * Timer::deltaTime, 0.0f, 1.5f * Timer::deltaTime);
 }
 
 void Game::Finish()

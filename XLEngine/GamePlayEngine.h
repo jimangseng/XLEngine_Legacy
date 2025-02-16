@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameScene.h"
+#include "Timer.h"
 
 namespace XL
 {
@@ -25,6 +26,9 @@ namespace XL
 
 		private:
 			XL::GamePlay::GameScene* gameScene;
+
+		public:
+			static Timer timer;
 		};
 	}
 }

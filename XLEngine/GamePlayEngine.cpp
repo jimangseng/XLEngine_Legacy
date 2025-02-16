@@ -1,17 +1,18 @@
 #include "GamePlayEngine.h"
-
-#include <memory>
-#include "GameObject.h"
-#include "Cube.h"
 #include "GameScene.h"
+#include "Timer.h"
+
+XL::GamePlay::Timer XL::GamePlay::GamePlayEngine::timer;
 
 void XL::GamePlay::GamePlayEngine::Initialize()
 {
+	timer.Initialize();
 	gameScene->Start();
 }
 
 void XL::GamePlay::GamePlayEngine::Update()
 {
+	timer.Update();
 	gameScene->Update();
 }
 

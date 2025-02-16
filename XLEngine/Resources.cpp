@@ -8,6 +8,7 @@ void XL::Graphics::D3D11::Resources::Build()
 	BuildDepthStencilView();
 	SetDepthStencilState();
 	SetBlendState();
+	SetSamplerState();
 }
 
 void XL::Graphics::D3D11::Resources::BuildDeviceAndSwapChain()
@@ -67,9 +68,9 @@ void XL::Graphics::D3D11::Resources::SetRasterizerState()
 {
 	D3D11_RASTERIZER_DESC rasterizerDesc =
 	{
-		D3D11_FILL_WIREFRAME,
-		D3D11_CULL_NONE,
-		true,
+		D3D11_FILL_SOLID,
+		D3D11_CULL_BACK,
+		false,
 		0,
 		0.0f,
 		0.0f,
@@ -166,4 +167,13 @@ void XL::Graphics::D3D11::Resources::SetBlendState()
 	};
 
 	Resources::device->CreateBlendState(&blendDesc, Resources::blendState.put());
+}
+
+void XL::Graphics::D3D11::Resources::SetSamplerState()
+{
+	D3D11_SAMPLER_DESC desc{};
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	result = device->CreateSamplerState(&desc, samplerState.put());
 }

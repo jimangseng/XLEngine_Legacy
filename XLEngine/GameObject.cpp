@@ -12,12 +12,12 @@ void XL::GameObjects::GameObject::Translate(float x, float y, float z)
 
 void XL::GameObjects::GameObject::Rotate(float x, float y, float z)
 {
-	rotation = XMMatrixRotationRollPitchYaw(x, y, z);
+	rotation *= XMMatrixRotationRollPitchYaw(x, y, z);
 }
 
 void XL::GameObjects::GameObject::Scale(float x, float y, float z)
 {
-	scale = XMMatrixScaling(x, y, z);
+	scale *= XMMatrixScaling(x, y, z);
 }
 
 // todo: 수학 라이브러리에 직접 구현해보기?

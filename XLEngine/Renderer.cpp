@@ -10,7 +10,7 @@ void XL::Graphics::D3D11::Renderer::Initialize()
 	BindResources();
 }
 
-void XL::Graphics::D3D11::Renderer::Update()
+void XL::Graphics::D3D11::Renderer::Draw()
 {
 	BindView();
 
@@ -52,7 +52,6 @@ void XL::Graphics::D3D11::Renderer::BindView()
 {
 	// binding RTV to pipline OM Stage
 	deviceContext->OMSetRenderTargets(1, resources.RenderTargetViews.data(), NULL);
-
 	deviceContext->ClearRenderTargetView(resources.renderTargetView.get(), backgroundColor);
 	//deviceContext->ClearDepthStencilView(depthStencilView.get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }

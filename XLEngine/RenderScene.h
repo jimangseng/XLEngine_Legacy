@@ -18,7 +18,7 @@ namespace XL
 			void Finalize();
 		
 		private:
-			std::vector<std::shared_ptr<Components::IRenderable>> ConvertScene(GamePlay::GameScene* _gameScene);
+			std::vector<std::shared_ptr<Components::IRenderable>> Load(GamePlay::GameScene* _gameScene);
 
 		public:
 			std::vector<std::shared_ptr<Components::IRenderable>>& GetObjects() { return renderObjects; }

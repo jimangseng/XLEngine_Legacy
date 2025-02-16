@@ -5,22 +5,22 @@
 
 void XL::Graphics::RenderScene::Initialize(GamePlay::GameScene* _gameScene)
 {
-	renderObjects = ConvertScene(_gameScene);
+	renderObjects = Load(_gameScene);
 
 	for (auto& object : renderObjects)
 	{
-		object->InitializeRendeable();
+		object->GetMesh()->Initialize();
 	}
 }
 
 void XL::Graphics::RenderScene::Update(GamePlay::GameScene* _gameScene)
 {
 	renderObjects.clear();
-	renderObjects = ConvertScene(_gameScene);
+	renderObjects = Load(_gameScene);
 
 	for (auto& object : renderObjects)
 	{
-		object->UpdateRenderable();
+		object->GetMesh()->Update();
 	}
 }
 
@@ -30,7 +30,7 @@ void XL::Graphics::RenderScene::Draw()
 {
 	for (auto& object : renderObjects)
 	{
-		object->DrawRenderable();
+		object->GetMesh()->Draw();
 	}
 }
 
@@ -38,13 +38,13 @@ void XL::Graphics::RenderScene::Finalize()
 {
 	for (auto& object : renderObjects)
 	{
-		object->FinalizeRenderable();
+		object->GetMesh()->Finalize();
 	}
 
 	delete[] renderObjects.data();
 }
 
-std::vector<std::shared_ptr<XL::Components::IRenderable>> XL::Graphics::RenderScene::ConvertScene(GamePlay::GameScene* _gameScene)
+std::vector<std::shared_ptr<XL::Components::IRenderable>> XL::Graphics::RenderScene::Load(GamePlay::GameScene* _gameScene)
 {
 	std::vector<std::shared_ptr<Components::IRenderable>> v;
 

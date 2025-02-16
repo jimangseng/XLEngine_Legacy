@@ -4,16 +4,16 @@ using namespace DirectX;
 using namespace XL::Math;
 
 
-XL::Math::Vector3::Vector3(Vector3&& _rhs)
-{
-	floats = std::move(_rhs.floats);
-}
-
-Vector3& XL::Math::Vector3::operator=(Vector3&& _rhs)
-{
-	floats = std::move(_rhs.floats);
-	return _rhs;
-}
+//XL::Math::Vector3::Vector3(Vector3&& _rhs)
+//{
+//	floats = std::move(_rhs.floats);
+//}
+//
+//Vector3& XL::Math::Vector3::operator=(Vector3&& _rhs)
+//{
+//	floats = std::move(_rhs.floats);
+//	return _rhs;
+//}
 
 XL::Math::Vector3::Vector3(float _x, float _y, float _z)
 {

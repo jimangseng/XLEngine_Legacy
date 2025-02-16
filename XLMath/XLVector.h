@@ -13,11 +13,11 @@ namespace XL
 			Vector3() = default;
 			~Vector3() = default;
 
-			Vector3(const Vector3& _rhs) = delete;
-			Vector3& operator= (const Vector3& _rhs) = delete;
+			//Vector3(const Vector3& _rhs) = delete;
+			//Vector3& operator= (const Vector3& _rhs) = delete;
 
-			Vector3(Vector3&& _rhs);
-			Vector3& operator= (Vector3&& _rhs);
+			//Vector3(Vector3&& _rhs);
+			//Vector3& operator= (Vector3&& _rhs);
 
 			Vector3(float _x, float _y, float _z);
 			Vector3(DirectX::XMFLOAT3 _floats);

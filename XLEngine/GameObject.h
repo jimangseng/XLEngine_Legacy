@@ -1,6 +1,7 @@
 #pragma once
 
-#include "XLMath.h"
+#include "../XLMath/XLMath.h"
+#include "Mesh.h"
 
 using namespace DirectX;
 
@@ -14,22 +15,21 @@ namespace XL
 		{
 		public:
 			// Transform 관련
-			// 자식 클래스에서 상속받아 사용
-			virtual void SetPosition(float x, float y, float z);
-			virtual void Translate(float x, float y, float z);
-			virtual void Rotate(float x, float y, float z);
-			virtual void Scale(float x, float y, float z);
+			void SetPosition(float x, float y, float z);
+			void Translate(float x, float y, float z);
+			void Rotate(float x, float y, float z);
+			void Scale(float x, float y, float z);
 
 			// todo: 수학 라이브러리 만들기
-			//virtual void Yaw(float _angle);
-			//virtual void Pitch(float _angle);
-			//virtual void Roll(float _angle);
+			//void Yaw(float _angle);
+			//void Pitch(float _angle);
+			//void Roll(float _angle);
 
 		public:
 			// GameScene 관련
-			virtual void InitializeGameObject() = 0;
-			virtual void UpdateGameObject() = 0;
-			virtual void FinalizeGameObject() = 0;
+			virtual void Initialize() = 0;
+			virtual void Update() = 0;
+			virtual void Finalize() = 0;
 
 		protected:
 			// Transform 관련 멤버 변수들

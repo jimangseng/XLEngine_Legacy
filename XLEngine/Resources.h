@@ -37,6 +37,7 @@ namespace XL
 				void BuildDepthStencilView();
 				void SetDepthStencilState();
 				void SetBlendState();
+				void SetSamplerState();
 
 			public:
 				// D3D ภฺฟ๘ต้
@@ -61,6 +62,7 @@ namespace XL
 				com_ptr<ID3D11RasterizerState> rasterizerState;
 
 				com_ptr<ID3D11BlendState> blendState;
+				com_ptr<ID3D11SamplerState> samplerState;
 
 				// misc
 				int ScreenWidth;
