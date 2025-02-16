@@ -5,6 +5,7 @@
 #include "RenderScene.h"
 #include "Resources.h"
 #include "GameScene.h"
+#include "Camera.h"
 
 namespace XL
 {

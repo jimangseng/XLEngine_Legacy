@@ -46,7 +46,7 @@ namespace XL
 				Resources& resources;
 				ID3D11DeviceContext* deviceContext;			// Resources 클래스에서 com_ptr로 관리하며, 생 포인터를 받아와 사용한다
 				DXGI_PRESENT_PARAMETERS presentParams;
-				const float backgroundColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
+				const float backgroundColor[4] = { 0.05f, 0.05f, 0.05f, 1.0f };
 			};
 		}
 	}

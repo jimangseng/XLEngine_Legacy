@@ -9,7 +9,7 @@ namespace XL
 		class IRenderable
 		{
 		public:
-			virtual XL::Components::Mesh* GetMesh() = 0;
+			inline XL::Components::Mesh* GetMesh() { return mesh; }
 
 		protected:
 			XL::Components::Mesh* mesh;

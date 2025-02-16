@@ -16,6 +16,7 @@ public:
 
 public:
 	XL::GamePlay::GameScene* GetScene() { return &scene; }
+	void SetScene(XL::GamePlay::GameScene* _gameScene) { scene = *_gameScene; }
 
 private:
 	XL::GamePlay::GameScene scene;

@@ -2,22 +2,17 @@
 #include "../XLMath/XLMath.h"
 #include "DirectXMath.h"
 #include "Mesh.h"
-
+#include "Camera.h"
 
 using namespace XL::Math;
 
 XL::GameObjects::Cube::Cube()
-	: Cube(0.1f, { 1.0f, 1.0f, 1.0f, 1.0f })
+	: Cube(0.1f)
 {
 }
 
-XL::GameObjects::Cube::Cube(XL::Math::Vector4 _color)
-	: Cube(0.1f, _color)
-{
-}
-
-XL::GameObjects::Cube::Cube(float _size, XL::Math::Vector4 _color)
-	: size(_size), color(_color)
+XL::GameObjects::Cube::Cube(float _size)
+	: size(_size)
 {
 	mesh = new XL::Components::Mesh();
 
@@ -121,9 +116,10 @@ void XL::GameObjects::Cube::UpdateMatrices()
 	float aspectRatio = static_cast<float>(resources.ScreenWidth / resources.ScreenHeight);
 
 	worldMatrix = XMMatrixMultiply(scale, XMMatrixMultiply(rotation, translation));
-	viewMatrix = XMMatrixIdentity();
+	viewMatrix = Camera::viewMatrix;
 	projectionMatrix = XMMatrixPerspectiveFovLH(20.0f, aspectRatio, 0.0001f, 100.0f);
 
 	WVPMatrix = XMMatrixMultiply(worldMatrix, XMMatrixMultiply(viewMatrix, projectionMatrix));
+	//WVPMatrix = XMMatrixMultiply(worldMatrix, viewMatrix);
 
 }

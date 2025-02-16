@@ -2,6 +2,7 @@
 
 #include "GameScene.h"
 #include "Timer.h"
+#include "Camera.h"
 
 namespace XL
 {
@@ -24,11 +25,14 @@ namespace XL
 			XL::GamePlay::GameScene* GetScene() { return gameScene; }
 			void SetScene(XL::GamePlay::GameScene* _scene) { gameScene = _scene; }
 
-		private:
-			XL::GamePlay::GameScene* gameScene;
 
 		public:
 			static Timer timer;
+			static Camera mainCamera;
+
+		private:
+			XL::GamePlay::GameScene* gameScene;
+
 		};
 	}
 }

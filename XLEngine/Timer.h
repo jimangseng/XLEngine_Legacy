@@ -20,6 +20,7 @@ namespace XL
 			void Initialize()
 			{
 				startTime = system_clock::now();
+				prevTime = startTime;	// 초기화 하지 않으면, deltatime을 곱해서 회전시킬 때 이상동작한다
 			}
 
 			void Update()

@@ -16,9 +16,6 @@
     <Filter Include="0_Engine\02_GraphicsEngine">
       <UniqueIdentifier>{b032b419-c102-45bf-8102-e4e3ca3903cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="0_Engine\02_GraphicsEngine\021_Components">
-      <UniqueIdentifier>{0eabc8e5-80b7-496a-926c-7e2bef5d6406}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3_Scene">
       <UniqueIdentifier>{c8109163-5012-4336-a283-ac8ddc1f7c14}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="0_Engine\01_GamePlayEngine\011_ Timer">
       <UniqueIdentifier>{b17f8257-3792-487d-ab3b-1f34b6796b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Engine\01_GamePlayEngine\012_Camera">
+      <UniqueIdentifier>{5f50df21-5e41-4b76-9632-3c01f6e33a6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,12 +48,6 @@
     <ClInclude Include="GamePlayEngine.h">
       <Filter>0_Engine\01_GamePlayEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
-    </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>3_Scene</Filter>
     </ClInclude>
@@ -67,11 +61,22 @@
     <ClInclude Include="IRenderable.h">
       <Filter>2_Components</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="..\WICTextureLoader\WICTextureLoader11.h">
       <Filter>TextureLoader</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Timer.h">
+      <Filter>0_Engine\01_GamePlayEngine\011_ Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>2_Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -86,12 +91,6 @@
     <ClCompile Include="GamePlayEngine.cpp">
       <Filter>0_Engine\01_GamePlayEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Resources.cpp">
-      <Filter>0_Engine\02_GraphicsEngine\021_Components</Filter>
-    </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>3_Scene</Filter>
     </ClCompile>
@@ -104,11 +103,22 @@
     <ClCompile Include="IRenderable.cpp">
       <Filter>2_Components</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="..\WICTextureLoader\WICTextureLoader11.cpp">
       <Filter>TextureLoader</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Timer.cpp">
+      <Filter>0_Engine\01_GamePlayEngine\011_ Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>2_Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>0_Engine\02_GraphicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">

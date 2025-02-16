@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "GameObject.h"
+#include "Camera.h"
 
 #undef GetObject
 namespace XL
@@ -31,6 +32,8 @@ namespace XL
 			GameObject* GetObject(unsigned int i) { return objects.at(i).get(); }
 			std::vector<std::shared_ptr<GameObject>>& GetObjects() { return objects; }
 
+		public:
+			Camera camera;
 		private:
 			std::vector<std::shared_ptr<GameObject>> objects;
 		};

@@ -5,9 +5,9 @@
 #pragma comment (lib, "dxgi.lib")
 #pragma comment (lib, "d3dcompiler.lib")
 
-void XL::XLEngine::Initialize(GamePlay::GameScene* _gameScene)
+void XL::XLEngine::Initialize()
 {
-	gamePlayEngine.SetScene(_gameScene);
+	gamePlayEngine.SetScene(currentScene);
 	gamePlayEngine.Initialize();
 
 	graphicsEngine.Initialize(gamePlayEngine.GetScene());

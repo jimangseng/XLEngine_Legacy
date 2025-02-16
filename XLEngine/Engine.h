@@ -20,14 +20,18 @@ namespace XL
 		}
 
 	public:
-		void Initialize(GamePlay::GameScene* _gameScene);
+		void Initialize();
 		void Update();
 		void Finalize();
+
+	public:
+		GamePlay::GameScene* GetScene() { return currentScene; }
+		void SetScene(GamePlay::GameScene* _scene) { currentScene = _scene; }
 
 	private:
 		GamePlay::GamePlayEngine gamePlayEngine;
 		Graphics::GraphicsEngine graphicsEngine;
 
-		GamePlay::GameScene currentScene;
+		GamePlay::GameScene* currentScene;
 	};
 }

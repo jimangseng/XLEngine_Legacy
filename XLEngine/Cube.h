@@ -32,22 +32,18 @@ namespace XL
 			Cube(Cube&& _cube) = default;
 			Cube& operator= (Cube&& _cube) = default;
 
-			Cube(XL::Math::Vector4 _color);
-			Cube(float _size, XL::Math::Vector4 _color);
+			Cube(float _size);
 
 		public:
 			virtual void Initialize() override;
 			virtual void Update() override;
 			virtual void Finalize() override;
 
-			virtual XL::Components::Mesh* GetMesh() override { return mesh; }
-
 		private:
 			void UpdateMatrices();
 
 		public:
 			float size;
-			XL::Math::Vector4 color;
 			std::vector<Vertex> vertices;
 			std::vector<UINT> indices;
 			std::vector<D3D11_INPUT_ELEMENT_DESC> inputElementDesc;
