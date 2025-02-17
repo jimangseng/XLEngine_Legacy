@@ -25,9 +25,9 @@ void Game::Start()
 
 void Game::Update()
 {
-	std::cout << Timer::deltaTime << std::endl;
-	std::cout << Timer::frateRate << std::endl;
-	std::cout << Timer::time << std::endl << std::endl;
+	//std::cout << Timer::deltaTime << std::endl;
+	//std::cout << Timer::frateRate << std::endl;
+	//std::cout << Timer::time << std::endl << std::endl;
 
 	// todo: 스크립트 분리 씬 객체를 몰라도 되도록 어떻게 해야 하는가?
 

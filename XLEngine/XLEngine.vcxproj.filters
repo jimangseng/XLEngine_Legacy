@@ -31,6 +31,9 @@
     <Filter Include="0_Engine\01_GamePlayEngine\012_Camera">
       <UniqueIdentifier>{5f50df21-5e41-4b76-9632-3c01f6e33a6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="0_Engine\01_GamePlayEngine\013_InputManager">
+      <UniqueIdentifier>{bd63ef31-518a-42a8-91b4-afb650b42a75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -76,7 +79,11 @@
     <ClInclude Include="Resources.h">
       <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Camera.h">
+      <Filter>0_Engine\01_GamePlayEngine\012_Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="XLUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -118,7 +125,11 @@
     <ClCompile Include="Resources.cpp">
       <Filter>0_Engine\02_GraphicsEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>0_Engine\01_GamePlayEngine\012_Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="XLUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">

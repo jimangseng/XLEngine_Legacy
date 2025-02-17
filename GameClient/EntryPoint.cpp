@@ -1,6 +1,6 @@
 ﻿#include "framework.h"
 #include "GameProcess.h"
-
+#include "../XLEngine/InputManager.h"
 
 HWND InitializeWindow(HINSTANCE hInstance, int nCmdShow);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -12,7 +12,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 	HWND hWnd = InitializeWindow(hInstance, nCmdShow);
 	MSG msg;
-	
+
 	GameProcess myGame(hWnd);
 	myGame.Start();
 
@@ -39,6 +39,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_MOUSEMOVE:	// todo: 엔진 의존성
+		XL::GamePlay::InputManager::mouseX = LOWORD(lParam);
+		XL::GamePlay::InputManager::mouseY = HIWORD(lParam);
+		// InputManager::Mouse()
+		break;
 
 	case WM_DESTROY:
 		PostQuitMessage(0);

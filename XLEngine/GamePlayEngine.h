@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "Timer.h"
 #include "Camera.h"
+#include "InputManager.h"
 
 namespace XL
 {
@@ -29,6 +30,7 @@ namespace XL
 		public:
 			static Timer timer;
 			static Camera mainCamera;
+			static InputManager inputManager;
 
 		private:
 			XL::GamePlay::GameScene* gameScene;

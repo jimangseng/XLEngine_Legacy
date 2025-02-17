@@ -4,6 +4,7 @@
 
 XL::GamePlay::Timer XL::GamePlay::GamePlayEngine::timer;
 XL::Camera XL::GamePlay::GamePlayEngine::mainCamera;
+XL::GamePlay::InputManager XL::GamePlay::GamePlayEngine::inputManager;
 
 void XL::GamePlay::GamePlayEngine::Initialize()
 {
@@ -15,6 +16,8 @@ void XL::GamePlay::GamePlayEngine::Initialize()
 void XL::GamePlay::GamePlayEngine::Update()
 {
 	timer.Update();
+	inputManager.Update();
+	mainCamera.Update();
 	gameScene->Update();
 }
 
