@@ -3,12 +3,18 @@
 #include "RenderScene.h"
 #include "GameScene.h"
 
+#include "ModelLoader.h"
+
 void XL::Graphics::RenderScene::Initialize(GamePlay::GameScene* _gameScene)
 {
 	renderObjects = Load(_gameScene);
 
+	ModelLoader loader;
+	string path = "../Models/untitled.obj";
+
 	for (auto& object : renderObjects)
 	{
+		loader.Load(path, object->GetMesh());
 		object->GetMesh()->Initialize();
 	}
 }

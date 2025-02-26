@@ -3,6 +3,7 @@
 #include "DirectXMath.h"
 #include "Mesh.h"
 #include "Camera.h"
+#include "Renderable.h"
 
 using namespace XL::Math;
 
@@ -82,7 +83,7 @@ XL::GameObjects::Cube::Cube(float _size)
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
-	texturePath = TEXT("../Textures/1.jpg");
+	texturePath = TEXT("../Textures/texture.png");
 }
 
 void XL::GameObjects::Cube::Initialize()

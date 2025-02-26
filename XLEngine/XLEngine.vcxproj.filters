@@ -84,6 +84,8 @@
     </ClInclude>
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="XLUtility.h" />
+    <ClInclude Include="ModelLoader.h" />
+    <ClInclude Include="Renderable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -130,6 +132,8 @@
     </ClCompile>
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="XLUtility.cpp" />
+    <ClCompile Include="ModelLoader.cpp" />
+    <ClCompile Include="Renderable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
@@ -141,5 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

@@ -19,11 +19,11 @@ void XL::Camera::Update()
 
 void XL::Camera::Translate(float x, float y, float z)
 {
-	position += { x, y, z};
+	position += {x, y, z};
+
 }
 
 void XL::Camera::SetDirection(float x, float y, float z)
 {
-	direction += {-x, y, z};
-	direction = XMVector3Normalize(direction);
+	direction = XMVector3Rotate(direction, XMQuaternionRotationRollPitchYaw(-x, -y, z));
 }

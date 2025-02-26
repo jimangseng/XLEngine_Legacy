@@ -3,7 +3,7 @@
 #include "Common.h"
 #include <vector>
 #include "GameObject.h"
-#include "IRenderable.h"
+#include "Renderable.h"
 #include "Resources.h"
 
 using namespace DirectX;
@@ -14,14 +14,14 @@ namespace XL
 {
 	namespace GameObjects
 	{
-		class Cube : public GameObject, public Components::IRenderable
+		struct Vertex
 		{
-			struct Vertex
-			{
-				XL::Math::Vector3 localPosition;
-				XMFLOAT2 UV;
-			};
+			XL::Math::Vector3 localPosition;
+			XMFLOAT2 UV;
+		};
 
+		class Cube : public GameObject, public Components::Renderable<Vertex>
+		{
 		public:
 			Cube();
 			~Cube() = default;
@@ -44,10 +44,6 @@ namespace XL
 
 		public:
 			float size;
-			std::vector<Vertex> vertices;
-			std::vector<UINT> indices;
-			std::vector<D3D11_INPUT_ELEMENT_DESC> inputElementDesc;
-			const wchar_t* texturePath;
 
 		private:
 			XL::Graphics::D3D11::Resources& resources = XL::Graphics::D3D11::Resources::GetInstance();

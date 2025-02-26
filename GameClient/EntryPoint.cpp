@@ -42,7 +42,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:	// todo: 엔진 의존성
 		XL::GamePlay::InputManager::mouseX = LOWORD(lParam);
 		XL::GamePlay::InputManager::mouseY = HIWORD(lParam);
-		// InputManager::Mouse()
 		break;
 
 	case WM_DESTROY:

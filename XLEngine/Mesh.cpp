@@ -11,17 +11,17 @@ HRESULT XL::Components::Mesh::BuildVertexBuffer()
 {
 	D3D11_BUFFER_DESC vbDesc
 	{
-		vertices.size * vertices.count,
+		aiVertexdata.size() * sizeof(aiVertex),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_VERTEX_BUFFER,
 		NULL,
 		NULL,
-		vertices.size
+		sizeof(aiVertex)
 	};
 
 	D3D11_SUBRESOURCE_DATA vbData
 	{
-		vertices.data,
+		aiVertexdata.data(),
 		0,
 		0
 	};
@@ -38,7 +38,7 @@ HRESULT XL::Components::Mesh::BuildIndexBuffer()
 
 	D3D11_BUFFER_DESC ibDesc
 	{
-		static_cast<UINT>(indices.size() * sizeof(UINT)),
+		aiIndices.size() * sizeof(UINT),
 		D3D11_USAGE_DEFAULT,
 		D3D11_BIND_INDEX_BUFFER,
 		NULL,
@@ -48,7 +48,7 @@ HRESULT XL::Components::Mesh::BuildIndexBuffer()
 
 	D3D11_SUBRESOURCE_DATA ibData
 	{
-		indices.data(),
+		aiIndices.data(),
 		0,
 		0
 	};
@@ -86,10 +86,18 @@ HRESULT XL::Components::Mesh::BuildConstantBuffer()
 
 HRESULT XL::Components::Mesh::BuildInputLayout()
 {
+	D3D11_INPUT_ELEMENT_DESC desc[2] = 
+	{
+		{"LOCALPOSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
 	result = device->CreateInputLayout
 	(
-		inputElementDesc.data(),
-		static_cast<UINT>(inputElementDesc.size()),
+		desc,
+		2,
+		//inputElementDesc.data(),
+		//static_cast<UINT>(inputElementDesc.size()),
 		vertexShaderByteCode->GetBufferPointer(),
 		vertexShaderByteCode->GetBufferSize(),
 		inputLayout.put()
@@ -167,7 +175,8 @@ void XL::Components::Mesh::Bind()
 	deviceContext->IASetInputLayout(inputLayout.get());
 
 	// binding Buffers to pipeline IA Stage
-	UINT strides = vertices.size;
+	//UINT strides = vertices.size;
+	UINT strides = sizeof(aiVertex);
 	UINT offsets = 0;
 	deviceContext->IASetVertexBuffers(0, static_cast<UINT>(VBs.size()), VBs.data(), &strides, &offsets);
 	deviceContext->IASetIndexBuffer(indexBuffer.get(), DXGI_FORMAT_R32_UINT, 0);
@@ -218,7 +227,8 @@ void XL::Components::Mesh::Draw()
 {
 	Bind();
 
-	deviceContext->DrawIndexed(static_cast<UINT>(indices.size()), 0, 0);
+	//deviceContext->DrawIndexed(static_cast<UINT>(indices.size()), 0, 0);
+	deviceContext->DrawIndexed(static_cast<UINT>(aiIndices.size()), 0, 0);
 
 	Unbind();
 }

@@ -3,6 +3,8 @@
 #include <vector>
 #include "Resources.h"
 #include <d3d11.h>
+#include "assimp\vector3.h"
+#include "assimp\vector2.h"
 
 namespace XL
 {
@@ -15,9 +17,20 @@ namespace XL
 			UINT size;
 		};
 
+		struct aiVertex
+		{
+			aiVector3D vertex;
+			aiVector2D texCoord;
+		};
+
 		class Mesh
 		{
 		public:
+
+			vector<XL::Components::aiVertex> aiVertexdata;
+			//vector<aiVector3D> aiVertices;
+			//vector<aiVector3D> aiTexCoords;
+			vector<UINT> aiIndices;
 
 			Vertices vertices;
 			vector<UINT> indices;

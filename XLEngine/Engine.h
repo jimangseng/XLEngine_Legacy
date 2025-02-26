@@ -17,6 +17,7 @@ namespace XL
 			: gamePlayEngine(GamePlay::GamePlayEngine()),
 			graphicsEngine(Graphics::GraphicsEngine(_hWnd))
 		{
+
 		}
 
 	public:
